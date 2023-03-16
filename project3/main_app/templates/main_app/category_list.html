@@ -15,7 +15,7 @@
       <span class="card-title activator grey-text text-darken-4">{{i.name}}<i class="material-icons right">more_vert</i></span>
       <div class="card-action">
         <a href="" class="btn"> Exercise </a>
-        <a href="" class="btn"> Quiz </a>
+        <a href="{% url 'quiz' i.id %}" class="btn"> Quiz </a>
       </div>
     </div>
     <div class="card-reveal">

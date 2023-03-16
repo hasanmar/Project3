@@ -37,7 +37,7 @@ class CategoryDetail(DetailView):
     model = Category
 
 
-def take_quiz(request, category_id, quiz_id):
+def take_quiz(request, category_id):
     quiz = Quiz.objects.get(category_id=category_id)
     # questions = [questions.append(q) for q in quiz ]
     return render(request, 'main_app/quiz.html', {"quiz": quiz})

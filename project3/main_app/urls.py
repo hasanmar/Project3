@@ -7,5 +7,5 @@ urlpatterns =[
     path('accounts/signup', views.signup, name='signup'),
     path('categories', views.CategoryList.as_view(), name='categories'),
     # path('category/<int:pk>', views.CategoryDetail.as_view(), name='categories_detail'),
-    path('category/<int:category_id>/quiz/<int:quiz_id>', views.take_quiz, name='quiz')
+    path('category/<int:category_id>/quiz/', views.take_quiz, name='quiz')
 ]
