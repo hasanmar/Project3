@@ -33,6 +33,30 @@ footer.page-footer {
     transition: transform .5s;
 }
 
+.op {
+    padding: 10px;
+    font-size: 20px;
+}
+
+li.row {
+    margin-left: 3%;
+}
+
+blockquote {
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+blockquote:hover {
+    background-color: #26a69a;
+}
+
+.green-color {
+    box-sizing: border-box;
+    background-color: #26a69a;
+}
+
+/* alert */
 .alert {
     position: relative;
     padding: 0.75rem 1.25rem;
