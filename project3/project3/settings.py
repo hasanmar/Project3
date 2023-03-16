@@ -78,11 +78,11 @@ WSGI_APPLICATION = "project3.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "neondb",
+        "NAME": "anas029/project3",
         "USER": "anas029",
-        "PASSWORD": "KXMlmGQ07LJx",
-        "HOST": "ep-plain-cloud-462263.eu-central-1.aws.neon.tech",
-        "PORT": "5432",
+        "PASSWORD": "v2_42BZE_4zuZeKEpbyUcBuhC3ch8WJe",
+        'HOST': 'db.bit.io',
+        'PORT': '5432',
     }
 }
 
