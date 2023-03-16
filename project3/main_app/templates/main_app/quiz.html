@@ -3,25 +3,70 @@
 {% block content %}
 <h1>Quiz</h1>
 {% for i in quiz %}
-<p>{{forloop.counter }}. {{i.qustion}}</p>
-<ul>
-    <li>
-        {{i.option1}}
-    </li>
+<div class="card" style="padding: 10px;">
+    
+    <div class="card-title">
+       <span> &nbsp; {{forloop.counter }}.</span> {{i.question}}
+    </div> 
+</div>
 
-    <li>
-        {{i.option2}}
-    </li>
+<form action="" method="post">
+    {% csrf_token %}
+    <ul>
+        <li class="row">
+            <blockquote data-select="{{i.option1}}" class="card col s5 ">
+                <div  class="op">
+                    {{i.option1}}
+                </div>
+            </blockquote>
+        </li>
+        <li class="row">
+            <blockquote data-select="{{i.option2}}" class="card col s5 ">
+                <div  class="op">
+                {{i.option2}}
+            </div>
+        </blockquote>
+        </li>
+        <li class="row">
+            <blockquote data-select="{{i.option3}}" class="card col s5 ">
+                <div  class="op">
+                {{i.option3}}
+            </div>
+        </blockquote>
+        </li>
+        <li class="row">
+            <blockquote data-select="{{i.option4}}" class="card col s5 ">
+                <div  class="op">
+                {{i.option4}}
+            </div>
+        </blockquote>
+        </li>
+    </ul>
+    <input type="submit" value="&nbsp; submit &nbsp;" class="btn right">
+    <input type="hidden" name="answer" id="answer" value="">
 
-    <li>
-        {{i.option3}}
-    </li>
-
-    <li>
-        {{i.option4}}
-    </li>
 </ul>
+
+</form>
 <h1> {{i.correctAnswer}} </h1>
 {% endfor %}
 
+
+
+<script>
+    const lists = document.querySelectorAll('blockquote')
+    const all = document.querySelectorAll('*')
+    const answer = document.querySelector('#answer')
+    function changeClass(e){
+        all.forEach(list=>{
+            list.classList.remove('green-color')
+        })
+        this.classList.add('green-color')
+        answer.value = this.dataset.select
+
+    }
+    lists.forEach(list=>{
+        list.addEventListener('click',changeClass)
+    })
+</script>
 {% endblock %}
