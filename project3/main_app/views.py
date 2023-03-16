@@ -5,7 +5,7 @@ from django.shortcuts import redirect, render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Category
+from .models import Category, Quiz
 
 
 from django.contrib import messages #import messages
@@ -15,11 +15,6 @@ from django.contrib import messages #import messages
 
 def index(request):
     return render(request, 'home.html')
-
-
-
-
-
 
 ## Sign up
 def signup(request):
@@ -42,6 +37,7 @@ class CategoryDetail(DetailView):
     model = Category
 
 
-# def take_quiz(self, category_id, quiz_id):
-#     quiz = Quiz.objects.get(id=quiz_id)
-#     questions = [questions.append(q) for q in quiz ]
+def take_quiz(request, category_id, quiz_id):
+    quiz = Quiz.objects.get(category_id=category_id)
+    # questions = [questions.append(q) for q in quiz ]
+    return render(request, 'main_app/quiz.html', {"quiz": quiz})

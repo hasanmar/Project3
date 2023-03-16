@@ -7,6 +7,7 @@ from django.contrib.auth.models import User
 class Category(models.Model):
     name = models.CharField(max_length=50)
     description = models.TextField(max_length=700)
+    imagePath = models.CharField(max_length=100, default='images/categories/1.png', blank=True)
 
     def get_absolute_url(self):
         return reverse("categories", kwargs={"pk": self.id})
@@ -45,6 +46,7 @@ class Quiz(models.Model):
     option1 = models.CharField(max_length=150)
     option2 = models.CharField(max_length=150)
     option3 = models.CharField(max_length=150)
+    option4 = models.CharField(max_length=150)
     correctAnswer = models.CharField(max_length=150)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     isApproved = models.BooleanField(default=False)
