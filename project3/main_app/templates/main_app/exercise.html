@@ -1,9 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Quiz</h1>
-{% for i in quiz %}
-<p>{{forloop.counter }}. {{i.qustion}}</p>
+<h1>Exercise</h1>
+
+{% for i in exercise %}
+<p>{{forloop.counter }}. {{i.question}}</p>
 <ul>
     <li>
         {{i.option1}}
@@ -23,5 +24,7 @@
 </ul>
 <h1> {{i.correctAnswer}} </h1>
 {% endfor %}
+
+
 
 {% endblock %}
