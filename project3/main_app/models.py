@@ -1,5 +1,7 @@
+from django.conf import settings
 from django.db import models
 from django.urls import reverse
+from django.contrib.auth.models import AbstractUser
 from django.contrib.auth.models import User
 
 
@@ -15,16 +17,15 @@ class Category(models.Model):
     def __str__(self):
         return self.name
     
-    
-class CustomUser(models.Model):
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
-    level = models.ManyToManyField(Category, through='UserCategory')
+    #Category, through='UserCategory', 
+class CustomUser(AbstractUser):
+    level = models.IntegerField(default=0)
 
     def __str__(self):
         return self.user.username
 
 class UserCategory(models.Model):
-    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     level = models.IntegerField(default=0)
     

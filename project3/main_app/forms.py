@@ -7,7 +7,7 @@ class UserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True, label='Email')
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ("username", "email", "password1", "password2")
 
     def save(self, commit=True):
