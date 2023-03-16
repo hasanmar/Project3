@@ -35,10 +35,13 @@ def signup(request):
     context = {'form': form}
     return render(request, 'registration/signup.html', context)
 
-class CategoryList(LoginRequiredMixin, ListView):
+class CategoryList(ListView):
     model = Category
 
-class CategoryDetail(LoginRequiredMixin, DetailView):
+class CategoryDetail(DetailView):
     model = Category
 
-        
+
+# def take_quiz(self, category_id, quiz_id):
+#     quiz = Quiz.objects.get(id=quiz_id)
+#     questions = [questions.append(q) for q in quiz ]

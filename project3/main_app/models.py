@@ -29,6 +29,16 @@ class UserCategory(models.Model):
     
 
 
+class Exercise(models.Model):
+    question = models.TextField(max_length=500)
+    option1 = models.CharField(max_length=150)
+    option2 = models.CharField(max_length=150)
+    option3 = models.CharField(max_length=150)
+    option4 = models.CharField(max_length=150)
+    correctAnswer = models.CharField(max_length=150)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
+    isApproved = models.BooleanField(default=False)    
+
 
 class Quiz(models.Model):
     qustion = models.TextField(max_length=500)    
