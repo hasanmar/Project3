@@ -6,7 +6,7 @@ from django.shortcuts import redirect, render
 from django.views.generic.list import ListView
 from django.views.generic.detail import DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin
-from .models import Category, Quiz, Exercise
+from .models import Category, Quiz, Exercise, CustomUser
 
 
 from django.contrib import messages  # import messages
