@@ -4,27 +4,77 @@
 <h1>Exercise</h1>
 
 {% for i in exercise %}
-<p>{{forloop.counter }}. {{i.question}}</p>
-<ul>
-    <li>
-        {{i.option1}}
-    </li>
+<div class="card" style="padding: 10px;">
+    
+    <div class="card-title">
+       <span> &nbsp; {{forloop.counter }}.</span> {{i.question}}
+    </div> 
+</div>
 
-    <li>
-        {{i.option2}}
-    </li>
+<form action="" method="post">
+    {% csrf_token %}
+    <ul>
+        <li class="row">
+            <blockquote data-select="{{i.option1}}" class="card col s5 ">
+                <div  class="op">
+                    {{i.option1}}
+                </div>
+            </blockquote>
+        </li>
+        <li class="row">
+            <blockquote class="card col s5 ">
+            <div  class="op">
+                {{i.option2}}
+            </div>
+        </blockquote>
+        </li>
+        <li class="row">
+            <blockquote class="card col s5 ">
+            <div  class="op">
+                {{i.option3}}
+            </div>
+        </blockquote>
+        </li>
+        <li class="row">
+            <blockquote class="card col s5 ">
+            <div  class="op">
+                {{i.option4}}
+            </div>
+        </blockquote>
+        </li>
+    </ul>
+    <input type="submit" value="&nbsp; submit &nbsp;" class="btn right">
 
-    <li>
-        {{i.option3}}
-    </li>
 
-    <li>
-        {{i.option4}}
-    </li>
+    <input type="hidden" name="answer" id="answer" value="d d">
+
 </ul>
+
+</form>
+
+{% comment %} <p>{{forloop.counter }}. {{i.question}}</p> {% endcomment %}
+
 <h1> {{i.correctAnswer}} </h1>
 {% endfor %}
 
+<script>
+    const lists = document.querySelectorAll('blockquote')
+    const all = document.querySelectorAll('*')
+    const answer = document.querySelector('#answer')
+    function changeClass(e){
+        all.forEach(list=>{
+            list.classList.remove('green-color')
+        })
+        this.classList.add('green-color')
+        console.log(this)
+        console.log(e)
+        answer.value = e.data-set.select
 
+    }
+    lists.forEach(list=>{
+        list.addEventListener('click',changeClass)
+    })
+</script>
 
 {% endblock %}
+
