@@ -8,14 +8,21 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from .models import Category
 
 
+from django.contrib import messages #import messages
+
+
 # Create your views here.
 
 def index(request):
     return render(request, 'home.html')
 
 
+
+
+
+
+## Sign up
 def signup(request):
-    error_message = ''
     if request.method == 'POST':
         form = UserCreationForm(request.POST)
         if form.is_valid():
@@ -23,9 +30,9 @@ def signup(request):
             login(request, user)
             return redirect('home')
         else:
-            error_message = 'Invalid form entries'
+            messages.error(request,'Invalid form entries')
     form = UserCreationForm()
-    context = {'form': form, 'error': error_message}
+    context = {'form': form}
     return render(request, 'registration/signup.html', context)
 
 class CategoryList(LoginRequiredMixin, ListView):

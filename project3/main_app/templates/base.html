@@ -1,5 +1,4 @@
 {% load static %}
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,21 +6,41 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title> Quiz website </title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <link rel="stylesheet" href="{% static 'css/style.css' %}">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <link rel="stylesheet" href="{% static '/css/style.css'%}">
+    <title>Quiz website</title>
 </head>
 
-
 <body>
-
-    <main class='container'>
-        {% block content %}
-        {% endblock %}
+    <header class="navbar-fixed">
+        <nav>
+            <div class="nav-wrapper">
+                <ul>
+                    <li>&nbsp;&nbsp;<a href="{% url 'home' %}" class="left brand-logo">Quiz website</a></li>
+                </ul>
+                <ul class="right">
+                    <li><a href="">About</a></li>
+                    
+                    {% if user.is_authenticated %}
+                    <li>Hi {{user.username}} you are logged in</li>
+                    <li><a href="home">home</a></li>
+                    <li><a href="{% url 'logout' %}">logout</a></li>
+                    {% else %}
+                    <li><a href="">Login</a></li>
+                    <li><a href="{% url 'signup' %}">sign up</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </nav>
+    </header>
+    <main class="container">
+        {% include 'message.html' %}
+        {%block content%}
+        {%endblock%}
     </main>
     <footer class="page-footer">
-        <div class="center">All Rights Reserved, &copy; 2023 CC &nbsp;</div>
+        <div class="center">All Rights Reserved, &copy; 2023 Cat Collector &nbsp;</div>
     </footer>
 </body>
 
