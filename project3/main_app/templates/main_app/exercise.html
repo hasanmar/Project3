@@ -22,22 +22,22 @@
             </blockquote>
         </li>
         <li class="row">
-            <blockquote class="card col s5 ">
-            <div  class="op">
+            <blockquote data-select="{{i.option2}}" class="card col s5 ">
+                <div  class="op">
                 {{i.option2}}
             </div>
         </blockquote>
         </li>
         <li class="row">
-            <blockquote class="card col s5 ">
-            <div  class="op">
+            <blockquote data-select="{{i.option3}}" class="card col s5 ">
+                <div  class="op">
                 {{i.option3}}
             </div>
         </blockquote>
         </li>
         <li class="row">
-            <blockquote class="card col s5 ">
-            <div  class="op">
+            <blockquote data-select="{{i.option4}}" class="card col s5 ">
+                <div  class="op">
                 {{i.option4}}
             </div>
         </blockquote>
@@ -46,35 +46,30 @@
     <input type="submit" value="&nbsp; submit &nbsp;" class="btn right">
 
 
-    <input type="hidden" name="answer" id="answer" value="d d">
+    <input type="hidden" name="answer" id="answer" value="">
 
 </ul>
 
 </form>
 
-{% comment %} <p>{{forloop.counter }}. {{i.question}}</p> {% endcomment %}
-
 <h1> {{i.correctAnswer}} </h1>
 {% endfor %}
 
-<script>
-    const lists = document.querySelectorAll('blockquote')
-    const all = document.querySelectorAll('*')
-    const answer = document.querySelector('#answer')
-    function changeClass(e){
-        all.forEach(list=>{
-            list.classList.remove('green-color')
-        })
-        this.classList.add('green-color')
-        console.log(this)
-        console.log(e)
-        answer.value = e.data-set.select
+    <script>
+        const lists = document.querySelectorAll('blockquote')
+        const all = document.querySelectorAll('*')
+        const answer = document.querySelector('#answer')
+        function changeClass(e){
+            all.forEach(list=>{
+                list.classList.remove('green-color')
+            })
+            this.classList.add('green-color')
+            answer.value = this.dataset.select
 
-    }
-    lists.forEach(list=>{
-        list.addEventListener('click',changeClass)
-    })
-</script>
+        }
+        lists.forEach(list=>{
+            list.addEventListener('click',changeClass)
+        })
+    </script>
 
 {% endblock %}
-
