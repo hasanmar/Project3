@@ -1,4 +1,4 @@
-{%load static%}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -8,8 +8,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-        <link rel="stylesheet" href="{% static 'css/style.css'%}">
-    <title>WebDevGuru</title>
+    <link rel="stylesheet" href="{% static '/css/style.css'%}">
+    <title>Quiz website</title>
 </head>
 
 <body>
@@ -17,7 +17,7 @@
         <nav>
             <div class="nav-wrapper">
                 <ul>
-                    <li>&nbsp;&nbsp;<a href="{% url 'home' %}" class="left brand-logo">WebDevGuru</a></li>
+                    <li>&nbsp;&nbsp;<a href="{% url 'home' %}" class="left brand-logo">Quiz website</a></li>
                 </ul>
                 <ul class="right">
                     <li><a href="">About</a></li>
@@ -28,13 +28,14 @@
                     <li><a href="{% url 'logout' %}">logout</a></li>
                     {% else %}
                     <li><a href="">Login</a></li>
-                    <li><a href="">sign up</a></li>
+                    <li><a href="{% url 'signup' %}">sign up</a></li>
                     {% endif %}
                 </ul>
             </div>
         </nav>
     </header>
     <main class="container">
+        {% include 'message.html' %}
         {%block content%}
         {%endblock%}
     </main>
