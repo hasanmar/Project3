@@ -5,9 +5,9 @@
 
 
 <h1> Categories </h1>
-<div class="row">
+<div class="row mg">
 {% for i in object_list %}
-<div class="card col s4 p">
+<div class="card col">
     <div class="card-image waves-effect waves-block waves-light">
       <img class="activator" src="{% static i.imagePath %}">
     </div>
@@ -24,8 +24,6 @@
     </div>
   </div>
 
-
-{% comment %} <h5> <a href="{% url 'categories_detail' i.id %}""> {{i.name}} </a> </h5> {% endcomment %}
 
 
 {% endfor %}
