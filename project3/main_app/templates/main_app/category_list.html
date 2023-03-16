@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1> Categories </h1>
+{% for i in object_list %}
+<h5> <a href="{% url 'categories_detail' i.id %}""> {{i.name}} </a> </h5>
+{% endfor %}
+
+
+{% endblock %}
