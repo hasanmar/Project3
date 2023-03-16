@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 """
 
 from pathlib import Path
+from django.contrib.messages import constants as messages
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -122,6 +123,15 @@ USE_TZ = True
 
 STATIC_URL = "static/"
 
+## message tags:
+
+MESSAGE_TAGS = {
+        messages.DEBUG: 'alert alert-secondary',
+        messages.INFO: 'alert alert-info',
+        messages.SUCCESS: 'alert alert-success',
+        messages.WARNING: 'alert alert-warning',
+        messages.ERROR: 'alert alert-danger',
+ }
 
 #redirect URLs
 LOGIN_REDIRECT_URL = '/'
