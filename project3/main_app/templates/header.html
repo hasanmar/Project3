@@ -1,0 +1,21 @@
+<header class="navbar-fixed">
+    <nav>
+        <div class="nav-wrapper">
+            <ul>
+                <li>&nbsp;&nbsp;<a href="{% url 'home' %}" class="left brand-logo">Quiz website</a></li>
+            </ul>
+            <ul class="right">
+                <li><a href="">About</a></li>
+                <li><a href="{% url 'categories' %}">Categories</a></li>
+                {% if user.is_authenticated %}
+                <li><a href="">Add Quiz</a></li>
+                <li>Hi {{user.username}} you are logged in</li>
+                <li><a href="{% url 'logout' %}">logout</a></li>
+                {% else %}
+                <li><a href="">Login</a></li>
+                <li><a href="{% url 'signup' %}">sign up</a></li>
+                {% endif %}
+            </ul>
+        </div>
+    </nav>
+</header>
