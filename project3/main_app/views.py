@@ -1,9 +1,8 @@
-from random import randint
-
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.db.models.functions import Random
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView
@@ -20,42 +19,41 @@ class CategoryList(ListView):
     model = Category
 
 
-# class CategoryDetail(DetailView):
-#     model = Category
-
-
+################################################
+##                    Quiz                   ##
+################################################
 def take_quiz(request, category_id):
-    quiz = Quiz.objects.all().filter(category_id=category_id)
-    questions = []
-    for q in quiz:
-        questions.append(q)
-    num = len(questions) - 1
-    while len(questions) > 5:
-        questions.pop(randint(0, num))
-        num -= 1
-    messages.info(request, "Good luck")
-    # print(questions)
-    return render(request, "main_app/quiz.html", {"questions": questions})
-
-
-def take_exercise(request, category_id):
-    exercise = Exercise.objects.all().filter(category_id=category_id)
     if request.method == 'GET':
-        questions = []
-        for e in exercise:
-            questions.append(e)
-        num = len(questions) - 1
-        while len(questions) > 5:
-            questions.pop(randint(0, num))
-            num -= 1
+        quiz = Quiz.objects.filter(category_id=category_id).order_by(
+            Random())[:5]
         messages.info(request, "Good luck")
+        quiz_id = []
+        for id in quiz:
+            quiz_id.append(id.id)
+        request.session['quiz_id'] = quiz_id
+        return render(request, "main_app/quiz.html", {"quiz": quiz})
     elif request.method == 'POST':
-        pass
-    else:
-        messages.error(request, "Invalid form entries")
+        messages.success(request, "quiz submitted")
+        return redirect('home')
 
-    # questions = [questions.append(q) for q in quiz ]
-    return render(request, "main_app/exercise.html", {"exercise": exercise})
+
+################################################
+##                  Exercise                 ##
+################################################
+def take_exercise(request, category_id):
+    if request.method == 'GET':
+        exercise = Exercise.objects.filter(category_id=category_id).order_by(
+            Random())[:5]
+        messages.info(request, "Good luck")
+        questions = []
+        for id in exercise:
+            questions.append(id.id)
+        request.session['questions'] = questions
+        return render(request, "main_app/exercise.html",
+                      {"exercise": exercise})
+    elif request.method == 'POST':
+        messages.success(request, "exercise submitted")
+        return redirect('home')
 
 
 ################################################

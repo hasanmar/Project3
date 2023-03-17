@@ -12,7 +12,7 @@
                 <li>Hi {{user.username}} you are logged in</li>
                 <li><a href="{% url 'logout' %}">logout</a></li>
                 {% else %}
-                <li><a href="">Login</a></li>
+                <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'signup' %}">sign up</a></li>
                 {% endif %}
             </ul>

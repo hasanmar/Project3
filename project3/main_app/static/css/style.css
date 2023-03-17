@@ -13,24 +13,21 @@ footer.page-footer {
     text-align: center;
 }
 
-.mg {
-    /* display: flex; */
-    /* flex-direction: column; */
-    justify-content: space-between;
-}
-
-.mg>.card {
-    width: 30%;
-    margin: 10px;
-}
 
 .mg>.card:hover img {
     transform: scale(1.2);
-    filter: blur(0.9px)
 }
 
 .mg>.card img {
     transition: transform .5s;
+}
+
+.mg>.card:hover {
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+}
+
+.mg>.card {
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
 }
 
 .op {
@@ -63,6 +60,8 @@ blockquote:hover {
     margin-bottom: 1rem;
     border: 1px solid transparent;
     border-radius: 0.25rem;
+    top: -50px;
+    animation: slide-in 1s forwards;
 }
 
 .alert-secondary {
@@ -93,4 +92,10 @@ blockquote:hover {
     color: #721c24;
     background-color: #f8d7da;
     border-color: #f5c6cb;
+}
+
+@keyframes slide-in {
+    to {
+        top: 0;
+    }
 }
