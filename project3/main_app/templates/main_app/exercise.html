@@ -3,72 +3,87 @@
 {% block content %}
 <h1>Exercise</h1>
 
-{% for i in exercise %}
-<div class="card" style="padding: 10px;">
-    
-    <div class="card-title">
-       <span> &nbsp; {{forloop.counter }}.</span> {{i.question}}
-    </div> 
-</div>
-
 <form action="" method="post">
     {% csrf_token %}
-    <ul>
-        <li class="row">
-            <blockquote data-select="{{i.option1}}" class="card col s5 ">
-                <div  class="op">
-                    {{i.option1}}
+{% for i in exercise %}
+<div class="ques hide">
+    <div class="card" style="padding: 10px;">
+        <div class="card-title">
+           <span> &nbsp; {{forloop.counter }}.</span> {{i.question}}
+        </div> 
+    </div>
+        <ul>
+            <li class="row">
+                <blockquote data-select="{{i.option1}}" data-num="{{forloop.counter }}"class="card col s5 ">
+                    <div  class="op">
+                        {{i.option1}}
+                    </div>
+                </blockquote>
+            </li>
+            <li class="row">
+                <blockquote data-select="{{i.option2}}"  data-num="{{forloop.counter }}" class="card col s5 ">
+                    <div  class="op">
+                    {{i.option2}}
                 </div>
             </blockquote>
-        </li>
-        <li class="row">
-            <blockquote data-select="{{i.option2}}" class="card col s5 ">
-                <div  class="op">
-                {{i.option2}}
-            </div>
-        </blockquote>
-        </li>
-        <li class="row">
-            <blockquote data-select="{{i.option3}}" class="card col s5 ">
-                <div  class="op">
-                {{i.option3}}
-            </div>
-        </blockquote>
-        </li>
-        <li class="row">
-            <blockquote data-select="{{i.option4}}" class="card col s5 ">
-                <div  class="op">
-                {{i.option4}}
-            </div>
-        </blockquote>
-        </li>
-    </ul>
-    <input type="submit" value="&nbsp; submit &nbsp;" class="btn right">
-
-
-    <input type="hidden" name="answer" id="answer" value="">
-
-</ul>
-
+            </li>
+            <li class="row">
+                <blockquote data-select="{{i.option3}}" data-num="{{forloop.counter }}" class="card col s5 ">
+                    <div  class="op">
+                    {{i.option3}}
+                </div>
+            </blockquote>
+            </li>
+            <li class="row">
+                <blockquote data-select="{{i.option4}}" data-num="{{forloop.counter }}" class="card col s5 ">
+                    <div  class="op">
+                    {{i.option4}}
+                </div>
+            </blockquote>
+            </li>
+        </ul>
+            <button type="button" class="right next waves-effect waves-light btn disabled">&nbsp; next &nbsp;</button>
+        </ul>
+    </div>    
+    {% endfor %}
+<input type="hidden" name="answer" id="answer">
+<input type="submit" value="&nbsp; submit &nbsp;" class="btn right hide disabled">
 </form>
-
-<h1> {{i.correctAnswer}} </h1>
-{% endfor %}
-
     <script>
+        let counter = 0
         const lists = document.querySelectorAll('blockquote')
         const all = document.querySelectorAll('*')
         const answer = document.querySelector('#answer')
-        function changeClass(e){
+        const ques = document.querySelectorAll('.ques')
+        const btnNext = document.querySelectorAll('.next')
+        const btnSumbit = document.querySelector('input[type=submit]')
+        ques[counter].classList.remove('hide')
+        function nextHandler(e){
+            ques[counter].classList.add('hide')
+            counter++
+            if (counter>3){
+                btnSumbit.classList.remove('hide')
+                btnNext[counter].classList.add('hide')}
+                ques[counter].classList.remove('hide')
+            }
+        function listsHandler(e){
+            btnNext[counter].classList.remove('disabled')
+            if (counter===4)
+                btnSumbit.classList.remove('disabled')
             all.forEach(list=>{
                 list.classList.remove('green-color')
             })
             this.classList.add('green-color')
-            answer.value = this.dataset.select
-
+            console.log(this.dataset.num)
+            const text='data-answer-'+this.dataset.num
+            answer.setAttribute(text,this.dataset.select)
         }
         lists.forEach(list=>{
-            list.addEventListener('click',changeClass)
+            list.addEventListener('click',listsHandler)
+        })
+        
+        btnNext.forEach(next=>{
+            next.addEventListener('click',nextHandler)
         })
     </script>
 
