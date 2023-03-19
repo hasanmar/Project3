@@ -47,7 +47,6 @@
         </ul>
     </div>    
     {% endfor %}
-{% comment %} <input type="hidden" name="answer" id="answer"> {% endcomment %}
 <input type="submit" value="&nbsp; submit &nbsp;" class="btn right hide disabled">
 </form>
     <script>
@@ -75,8 +74,6 @@
                 list.classList.remove('green-color')
             })
             this.classList.add('green-color')
-            console.log(this.dataset.num)
-            const text='data-answer-'+this.dataset.num
             answers[counter].value=this.dataset.select
         }
         lists.forEach(list=>{
