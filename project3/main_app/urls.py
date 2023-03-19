@@ -10,5 +10,13 @@ urlpatterns = [
     path('category/<int:category_id>/quiz', views.take_quiz, name='quiz'),
     path('category/<int:category_id>/exercise',
          views.take_exercise,
-         name='exercise')
+         name='exercise'),
+    
+    
+    
+   ##Add Exercises##
+   
+    path('categories/<int:category_id>/addexercise', views.AddExercise.as_view(), name='add_exercise'),
+    
+    ##Add Exercises##
 ]

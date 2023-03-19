@@ -1,6 +1,6 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import CustomUser, User
+from .models import CustomUser, Exercise, User
 
 
 class UserCreationForm(UserCreationForm):
@@ -16,3 +16,16 @@ class UserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+## Add Exercises ##
+
+class AddExerciseForm(forms.ModelForm):
+    body = forms.CharField(required=True)
+    
+    class Meta:
+        model = Exercise
+        fields = ['question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer']
+
+## Add Exercises ##   
+        
