@@ -5,9 +5,16 @@ from django.contrib.auth.views import LoginView
 from django.db.models.functions import Random
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
+<<<<<<< HEAD
 from .models import Category, Quiz, Exercise, UserCategory, CustomUser
+=======
+
+from .models import Category, Quiz, Exercise, CustomUser
+from main_app.forms import UserCreationForm, AddExerciseForm
+from .models import Category, Quiz, Exercise, UserCategory
+>>>>>>> b0d45ed0181281da5ba145a4f878e58ae82e4106
 from main_app.forms import UserCreationForm
 
 
@@ -17,6 +24,7 @@ def index(request):
 
 class CategoryList(ListView):
     model = Category
+
 
 
 ################################################
@@ -137,3 +145,30 @@ class CustomLoginView(LoginView):
             self.request,
             f'Welcome back, {username}! You have successfully signed in.')
         return super().form_valid(form)
+
+
+
+
+
+
+
+
+
+
+### Add Exercises ###
+
+class AddExercise(CreateView):
+    model = Exercise
+    fields = ['question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer']
+    success_url = '/'
+
+    # def get_success_url(self):
+    #     return reverse()
+    
+    def form_valid(self, form):
+        form.instance.category_id = self.kwargs['category_id']
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+############################
