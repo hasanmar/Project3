@@ -42,18 +42,19 @@
             </blockquote>
             </li>
         </ul>
+            <input type="hidden" name="answer{{forloop.counter}}" class="hidden-answer">
             <button type="button" class="right next waves-effect waves-light btn disabled">&nbsp; next &nbsp;</button>
         </ul>
     </div>    
     {% endfor %}
-<input type="hidden" name="answer" id="answer">
+{% comment %} <input type="hidden" name="answer" id="answer"> {% endcomment %}
 <input type="submit" value="&nbsp; submit &nbsp;" class="btn right hide disabled">
 </form>
     <script>
         let counter = 0
         const lists = document.querySelectorAll('blockquote')
         const all = document.querySelectorAll('*')
-        const answer = document.querySelector('#answer')
+        const answers = document.querySelectorAll('.hidden-answer')
         const ques = document.querySelectorAll('.ques')
         const btnNext = document.querySelectorAll('.next')
         const btnSumbit = document.querySelector('input[type=submit]')
@@ -76,7 +77,7 @@
             this.classList.add('green-color')
             console.log(this.dataset.num)
             const text='data-answer-'+this.dataset.num
-            answer.setAttribute(text,this.dataset.select)
+            answers[counter].value=this.dataset.select
         }
         lists.forEach(list=>{
             list.addEventListener('click',listsHandler)
