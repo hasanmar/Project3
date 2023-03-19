@@ -54,6 +54,8 @@ def take_exercise(request, category_id):
         return render(request, "main_app/exercise.html",
                       {"exercise": exercise})
     elif request.method == 'POST':
+        for i in range(1,6):
+            print(request.POST.get(f'answer{i}'))
         messages.success(request, "exercise submitted")
         return redirect('home')
 

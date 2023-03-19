@@ -1,7 +1,10 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Quiz</h1>
+<h1>Quiz: {{quiz.first.category}}<span id="timer-display" class="right">90</span></h1>
+<div class="progress">
+    <div class="determinate" style="width: 70%"></div>
+</div>
 
 <form action="" method="post">
     {% csrf_token %}
@@ -12,36 +15,37 @@
            <span> &nbsp; {{forloop.counter }}.</span> {{i.question}}
         </div> 
     </div>
-        <ul>
+     <ul class="exer-quiz">
             <li class="row">
-                <blockquote data-select="{{i.option1}}" data-num="{{forloop.counter }}"class="card col s5 ">
+                <blockquote data-select="{{i.option1}}" data-num="{{forloop.counter }}"class="card col s10 ">
                     <div  class="op">
                         {{i.option1}}
                     </div>
                 </blockquote>
             </li>
             <li class="row">
-                <blockquote data-select="{{i.option2}}"  data-num="{{forloop.counter }}" class="card col s5 ">
+                <blockquote data-select="{{i.option2}}"  data-num="{{forloop.counter }}" class="card col s10 ">
                     <div  class="op">
                     {{i.option2}}
                 </div>
             </blockquote>
             </li>
             <li class="row">
-                <blockquote data-select="{{i.option3}}" data-num="{{forloop.counter }}" class="card col s5 ">
+                <blockquote data-select="{{i.option3}}" data-num="{{forloop.counter }}" class="card col s10 ">
                     <div  class="op">
                     {{i.option3}}
                 </div>
             </blockquote>
             </li>
             <li class="row">
-                <blockquote data-select="{{i.option4}}" data-num="{{forloop.counter }}" class="card col s5 ">
+                <blockquote data-select="{{i.option4}}" data-num="{{forloop.counter }}" class="card col s10 ">
                     <div  class="op">
                     {{i.option4}}
                 </div>
             </blockquote>
             </li>
         </ul>
+        <input type="hidden" name="answer{{forloop.counter}}" class="hidden-answer">
             <button type="button" class="right next waves-effect waves-light btn disabled">&nbsp; next &nbsp;</button>
         </ul>
     </div>    
@@ -51,12 +55,15 @@
 </form>
 <script>
     let counter = 0
+    let timer = 90
     const lists = document.querySelectorAll('blockquote')
     const all = document.querySelectorAll('*')
-    const answer = document.querySelector('#answer')
+    const answers = document.querySelectorAll('.hidden-answer')
     const ques = document.querySelectorAll('.ques')
     const btnNext = document.querySelectorAll('.next')
     const btnSumbit = document.querySelector('input[type=submit]')
+    const timerText = document.querySelector('#timer-display')
+    const form = document.querySelector('form')
     ques[counter].classList.remove('hide')
     function nextHandler(e){
         ques[counter].classList.add('hide')
@@ -74,9 +81,7 @@
             list.classList.remove('green-color')
         })
         this.classList.add('green-color')
-        console.log(this.dataset.num)
-        const text='data-answer-'+this.dataset.num
-        answer.setAttribute(text,this.dataset.select)
+        answers[counter].value=this.dataset.select
     }
     lists.forEach(list=>{
         list.addEventListener('click',listsHandler)
@@ -85,6 +90,17 @@
     btnNext.forEach(next=>{
         next.addEventListener('click',nextHandler)
     })
+const mytimer = setInterval(countTime,1000)
+function countTime(){
+        timer--
+        timerText.innerHTML = timer
+        if (timer === 0){
+            clearInterval(mytimer)
+            timerText.innerHTML = "Time's up"
+            form.submit()
+        }
+}
+
 </script>
 
 {% endblock %}
