@@ -18,7 +18,8 @@ class Category(models.Model):
         return self.name
     
     #Category, through='UserCategory', 
-class CustomUser(AbstractUser):
+class CustomUser(AbstractUser, models.Model):
+    email = models.EmailField(max_length=255, blank=False,default='')
     level = models.IntegerField(default=0)
 
     def __str__(self):
@@ -28,8 +29,6 @@ class UserCategory(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     level = models.IntegerField(default=0)
-    
-
 
 class Exercise(models.Model):
     question = models.TextField(max_length=500)
