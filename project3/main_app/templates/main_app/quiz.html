@@ -3,7 +3,7 @@
 {% block content %}
 <h1>Quiz: {{quiz.first.category}}<span id="timer-display" class="right">90</span></h1>
 <div class="progress">
-    <div class="determinate" style="width: 70%"></div>
+    <div class="determinate" id="progress-bar" style="width: 0"></div>
 </div>
 
 <form action="" method="post">
@@ -56,6 +56,7 @@
 <script>
     let counter = 0
     let timer = 90
+    let progress = 0
     const lists = document.querySelectorAll('blockquote')
     const all = document.querySelectorAll('*')
     const answers = document.querySelectorAll('.hidden-answer')
@@ -64,10 +65,13 @@
     const btnSumbit = document.querySelector('input[type=submit]')
     const timerText = document.querySelector('#timer-display')
     const form = document.querySelector('form')
+    const progressBar = document.querySelector('#progress-bar')
     ques[counter].classList.remove('hide')
     function nextHandler(e){
         ques[counter].classList.add('hide')
         counter++
+        progress+=20
+        
         if (counter>3){
             btnSumbit.classList.remove('hide')
             btnNext[counter].classList.add('hide')}
