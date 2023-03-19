@@ -3,13 +3,13 @@
 {% block content %}
 
 <h1>Score</h1>
-<h1>ss</h1>
 {% for q in questionList %}
 
 {{q.question}}
 
 {% endfor %}
 
+<h1>Wrong answers:</h1>
 {% for w in wrongAnswers %}
 <h1>{{forloop.counter}}</h1>
 {{w}}

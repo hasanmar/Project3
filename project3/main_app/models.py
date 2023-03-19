@@ -28,7 +28,7 @@ class CustomUser(AbstractUser, models.Model):
 class UserCategory(models.Model):
     user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
-    level = models.IntegerField(default=0)
+    level = models.FloatField(default=0)
 
 class Exercise(models.Model):
     question = models.TextField(max_length=500)
