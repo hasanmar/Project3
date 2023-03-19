@@ -32,6 +32,33 @@ WebDevGuru was built using the following technologies:
 - Django
 - Postgres
 
+## Code Samples
+
+- Modifiying biult-in UserModel:
+
+WebDevGuru keeps track of each user's score and level, and in order to achieve that, we added a new field to the built-in user model using AbstractUser.
+
+```
+# imported library
+from django.contrib.auth.models import AbstractUser
+
+class CustomUser(AbstractUser):
+    level = models.IntegerField(default=0)
+```
+
+- Random query from database:
+
+For each exercise and quiz, WebDevGuru provides a randomly selected set of 5 questions, filtered by category.
+
+```
+# imported library
+from django.db.models.functions import Random
+
+exercise = Exercise.objects.filter(category_id=category_id).order_by(Random())[:5]
+quiz = Quiz.objects.filter(category_id=category_id).order_by(Random())[:5]
+
+```
+
 ## ERD
 
 ![ERD](https://i.ibb.co/tCLKZzL/ERD.png)

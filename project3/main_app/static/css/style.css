@@ -4,6 +4,13 @@ body {
     flex-direction: column;
 }
 
+.nav-wrapper,
+header.navbar-fixed,
+nav {
+    box-shadow: none !important;
+}
+
+
 main {
     flex: 1 0 auto;
 }
