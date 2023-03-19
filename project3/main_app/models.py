@@ -23,11 +23,11 @@ class CustomUser(AbstractUser, models.Model):
     level = models.IntegerField(default=0)
 
     def __str__(self):
-        return self.user.username
+        return self.username
 
 class UserCategory(models.Model):
-    user_id = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
-    category_id = models.ForeignKey(Category, on_delete=models.CASCADE)
+    user = models.ForeignKey(CustomUser, on_delete=models.CASCADE)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     level = models.IntegerField(default=0)
 
 class Exercise(models.Model):

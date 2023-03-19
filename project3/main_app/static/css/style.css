@@ -23,10 +23,12 @@ footer.page-footer {
 
 .mg>.card:hover img {
     transform: scale(1.2);
+    filter: brightness(1);
 }
 
 .mg>.card img {
     transition: transform .5s;
+    filter: brightness(.9);
 }
 
 .mg>.card:hover {
@@ -53,6 +55,11 @@ blockquote {
 
 blockquote:hover {
     background-color: #26a69a;
+}
+
+.exer-quiz,
+.exer-quiz li {
+    margin-bottom: 0;
 }
 
 .green-color {
