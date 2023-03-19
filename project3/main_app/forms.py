@@ -1,6 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
 from .models import CustomUser, Quiz, User
+from .models import CustomUser, Exercise, User
 
 
 class UserCreationForm(UserCreationForm):
@@ -23,3 +24,16 @@ class Quizform(forms.ModelForm):
     class Meta:
         model = Quiz
         fields = ['qustion', 'option1', 'option2', 'option3','option4', 'correctAnswer']  
+
+
+## Add Exercises ##
+
+class AddExerciseForm(forms.ModelForm):
+    body = forms.CharField(required=True)
+    
+    class Meta:
+        model = Exercise
+        fields = ['question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer']
+
+## Add Exercises ##   
+        

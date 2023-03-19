@@ -8,7 +8,11 @@ from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView,CreateView, DeleteView
 from .models import Category, Quiz, Exercise, CustomUser
 from django.views.generic import ListView, DetailView
+from django.views.generic import ListView, DetailView, CreateView
 
+
+from .models import Category, Quiz, Exercise, CustomUser
+from main_app.forms import UserCreationForm, AddExerciseForm
 from .models import Category, Quiz, Exercise, UserCategory
 from main_app.forms import UserCreationForm
 
@@ -19,6 +23,7 @@ def index(request):
 
 class CategoryList(ListView):
     model = Category
+
 
 
 ################################################
@@ -136,3 +141,30 @@ class AddQuiz(CreateView):
  
 
 
+
+
+
+
+
+
+
+
+
+
+### Add Exercises ###
+
+class AddExercise(CreateView):
+    model = Exercise
+    fields = ['question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer']
+    success_url = '/'
+
+    # def get_success_url(self):
+    #     return reverse()
+    
+    def form_valid(self, form):
+        form.instance.category_id = self.kwargs['category_id']
+        form.instance.user = self.request.user
+        return super().form_valid(form)
+
+
+############################
