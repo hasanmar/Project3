@@ -2,9 +2,9 @@
 
 {% block content %}
 <h1>Quiz: {{quiz.first.category}}<span id="timer-display" class="right">90</span></h1>
-<div class="progress">
-    <div class="determinate" id="progress-bar" style="width: 0"></div>
-</div>
+<div style="display: flex;"><div class="progress">
+    <div class="determinate" id="progress-bar" style="width: 0"></div> 
+</div><div id="q-id">1/5</div></div>
 
 <form action="" method="post">
     {% csrf_token %}
@@ -66,12 +66,14 @@
     const timerText = document.querySelector('#timer-display')
     const form = document.querySelector('form')
     const progressBar = document.querySelector('#progress-bar')
+    const qId = document.querySelector('#q-id')
     ques[counter].classList.remove('hide')
     function nextHandler(e){
         ques[counter].classList.add('hide')
         counter++
         progress+=20
-        
+        progressBar.style.width=`${progress}%`
+        qId.innerText=`${counter+1}/5`
         if (counter>3){
             btnSumbit.classList.remove('hide')
             btnNext[counter].classList.add('hide')}
