@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Score</h1>
+<h1>ss</h1>
+{% for q in questionList %}
+
+{{q.question}}
+
+{% endfor %}
+
+{% for w in wrongAnswers %}
+<h1>{{forloop.counter}}</h1>
+{{w}}
+{% endfor %}
+
+
+<h1> score: {{ score }} </h1>
+{% endblock %}
