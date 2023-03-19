@@ -7,6 +7,9 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView,CreateView, DeleteView
 from .models import Category, Quiz, Exercise, CustomUser
+from django.views.generic import ListView, DetailView
+
+from .models import Category, Quiz, Exercise, UserCategory
 from main_app.forms import UserCreationForm
 
 
@@ -51,8 +54,34 @@ def take_exercise(request, category_id):
         return render(request, "main_app/exercise.html",
                       {"exercise": exercise})
     elif request.method == 'POST':
-        messages.success(request, "exercise submitted")
-        return redirect('home')
+        answers =[]
+        questionList =[]
+        correctAnswers =[]
+        wrongAnswers =[]
+        score = 0
+        counter = 0
+        for i in range(1,6):
+            answers.append(request.POST.get(f'answer{i}'))
+        questions = request.session.get('questions')
+        for q in questions:
+            questionList.append(Exercise.objects.get(id = q))
+            correctAnswers.append(Exercise.objects.get(id = q).correctAnswer)
+        for a in answers:
+            if a == correctAnswers[counter]:
+                counter += 1
+                score +=20
+            else:
+                wrongAnswers.append(f"{questionList[counter].question}, {a}")
+        user = request.user.id 
+        category = category_id
+        print(request.user.id) 
+        return render(request, 'main_app/score.html', {
+            'questionList':questionList,
+            'wrongAnswers' : wrongAnswers,
+            'score' : score 
+        })
+        # messages.success(request, "exercise submitted")
+        # return redirect('home')
 
 
 ################################################
