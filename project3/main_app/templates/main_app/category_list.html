@@ -15,11 +15,11 @@
       </div>
 
       <div class="card-content">
-        <span class="card-title activator grey-text text-darken-4">{{i.name}}<i class="material-icons right">more_vert</i></span>
+        <span class="card-title activator grey-text text-darken-4"><strong>{{i.name}}</strong><i class="material-icons right">more_vert</i></span>
         
         <div class="card-action">
-          <a href="{% url 'exercise' i.id %}" class="btn waves-effect waves-light"> Exercise </a>
-          <a href="{% url 'quiz' i.id %}" class="btn waves-effect waves-light"> Quiz </a>
+          <a href="{% url 'exercise' i.id %}" class="btn waves-effect waves-light deep-purple lighten-2"> Exercise </a>
+          <a href="{% url 'quiz' i.id %}" class="btn waves-effect waves-light red darken-1 right"> Quiz </a>
         </div>
 
       </div>
