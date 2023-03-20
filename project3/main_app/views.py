@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView
 from django.db.models.functions import Random
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, TemplateView
 
 from .models import Category, Quiz, Exercise, UserCategory, CustomUser
 from .forms import UserCreationForm, AddExerciseForm
@@ -19,8 +19,6 @@ def index(request):
 
 class CategoryList(ListView):
     model = Category
-
-
 
 ################################################
 ##                    Quiz                   ##
@@ -170,3 +168,12 @@ class AddExercise(CreateView):
 
 
 ############################
+
+################################################
+##                 contribute                 ##
+################################################
+class ContributeCategoryList(ListView):
+    model = Category
+    template_name = "main_app/contribute.html"
+
+

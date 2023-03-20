@@ -8,7 +8,7 @@
                 <li><a href="">About</a></li>
                 <li><a href="">Learn</a></li>
                 <li><a href="{% url 'categories' %}">Categories</a></li>
-                <li><a href="">Contribute</a></li>
+                <li><a href="{% url 'contribute' %}">Contribute</a></li>
                 {% if user.is_authenticated %}
                 {% comment %} <li><a href="">Add Exercise</a></li> {% endcomment %}
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">account_circle</i></a>&nbsp;</li>

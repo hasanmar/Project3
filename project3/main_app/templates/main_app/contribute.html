@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<section class="container" id="contribute"> 
+<h1> contribute </h1>
+<div class="row">
+{% for i in object_list %}
+  <div class="col s4 m4 l4 m2 mg">
+    <div class="card z-depth-1">
+
+      <div class="card-image waves-effect waves-block waves-light">
+        <img class="activator" src="{% static i.imagePath %}">
+      </div>
+
+      <div class="card-content">
+        <span class="card-title activator grey-text text-darken-4"><strong>{{i.name}}</strong><i class="material-icons right">more_vert</i></span>
+        
+        <div class="card-action">
+          <a href="{% url 'exercise' i.id %}" class="btn waves-effect waves-light deep-purple lighten-2"> Exercise </a>
+          <a href="{% url 'quiz' i.id %}" class="btn waves-effect waves-light red darken-1 right"> Quiz </a>
+        </div>
+
+      </div>
+
+      <div class="card-reveal">
+        <span class="card-title grey-text text-darken-4">{{i.name}}<i class="material-icons right">close</i></span>
+        <p class="card-title flow-text" style="min-height: 82%;">{{i.description}}</p>
+      </div>
+
+    </div>
+  </div>
+
+
+
+{% endfor %}
+</div>
+
+
+
+
+</section>
+{% endblock %}
