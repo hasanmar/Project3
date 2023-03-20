@@ -5,16 +5,15 @@ from django.contrib.auth.views import LoginView
 from django.db.models.functions import Random
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
+from django.views.generic import ListView, DetailView,CreateView, DeleteView
+from .models import Category, Quiz, Exercise, CustomUser
+from django.views.generic import ListView, DetailView
 from django.views.generic import ListView, DetailView, CreateView
 
-<<<<<<< HEAD
-from .models import Category, Quiz, Exercise, UserCategory, CustomUser
-=======
 
 from .models import Category, Quiz, Exercise, CustomUser
 from main_app.forms import UserCreationForm, AddExerciseForm
 from .models import Category, Quiz, Exercise, UserCategory
->>>>>>> b0d45ed0181281da5ba145a4f878e58ae82e4106
 from main_app.forms import UserCreationForm
 
 
@@ -145,13 +144,22 @@ class CustomLoginView(LoginView):
             self.request,
             f'Welcome back, {username}! You have successfully signed in.')
         return super().form_valid(form)
+    
 
-
-
-
-
-
-
+#Add quiz
+class AddQuiz(CreateView):
+    model = Quiz   
+    fields = ['qustion', 'option1', 'option2', 'option3','option4', 'correctAnswer']
+    success_url = '/' 
+     
+     #function to add quiz
+    def form_valid(self, form): 
+        form.instance.category_id = self.kwargs['category_id']
+        #self.requset.user is logged user
+        form.instance.user = self.request.user
+        #Allows createview from valid method to do its normal work
+        return super().form_valid(form)
+    
 
 
 
