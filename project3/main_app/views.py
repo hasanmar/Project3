@@ -9,12 +9,15 @@ from django.views.generic import ListView, DetailView,CreateView, DeleteView
 from .models import Category, Quiz, Exercise, CustomUser
 from django.views.generic import ListView, DetailView
 from django.views.generic import ListView, DetailView, CreateView
-
-
 from .models import Category, Quiz, Exercise, CustomUser
 from main_app.forms import UserCreationForm, AddExerciseForm
 from .models import Category, Quiz, Exercise, UserCategory
 from main_app.forms import UserCreationForm
+from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView,PasswordResetForm
+from .forms import NewPasswordResetForm, NewSetPasswordForm
+
+
+
 
 
 def index(request):
@@ -180,3 +183,40 @@ class AddExercise(CreateView):
 
 
 ############################
+
+
+
+# def reset_password(request):
+#     if request.method == 'POST':
+#         form = PasswordResetForm(request.POST)
+#         if form.is_valid():
+#             user = form.get_user()
+#             new_password = form.cleaned_data['new_password']
+#             user.set_password(new_password)
+#             user.save()
+#             return redirect('login')
+#     else:
+#         form = PasswordResetForm()
+#     return render(request, 'reset_password.html', {'form': form})
+
+class NewPasswordResetView(PasswordResetView):
+    form_class = NewPasswordResetForm
+    template_name = 'reset_password.html'
+    success_url = '/login/'
+
+class NewPasswordResetConfirmView(PasswordResetConfirmView):
+    form_class = NewSetPasswordForm
+    template_name = 'reset_password_confirm.html'
+    success_url = '/login/'
+    
+def reset_password(request):
+    if request.method == 'POST':
+        form = NewPasswordResetForm(request.POST)
+        if form.is_valid():
+            form.save(request=request)
+            return redirect('login')
+    else:
+        form = NewPasswordResetForm()
+    return render(request, 'reset_password.html', {'form': form})
+
+
