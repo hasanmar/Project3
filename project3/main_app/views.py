@@ -65,23 +65,46 @@ def take_exercise(request, category_id):
         wrongAnswers =[]
         score = 0
         counter = 0
+        print('counter', counter)
         for i in range(1,6):
             answers.append(request.POST.get(f'answer{i}'))
         questions = request.session.get('questions')
         for q in questions:
-            questionList.append(Exercise.objects.get(id = q))
+            questionList.append(Exercise.objects.get(id = q)) 
             correctAnswers.append(Exercise.objects.get(id = q).correctAnswer)
-        for a in answers:
+        for a in answers: 
             if a == correctAnswers[counter]:
-                counter += 1
+                if counter <5:
+                    counter+= 1
                 score +=20
-            else:
+            elif a!= correctAnswers[counter]:
+                if counter<5: 
+                    counter+=1
                 wrongAnswers.append(f"{questionList[counter].question}, {a}")
+
         user = request.user.id 
+        print("user", user)
         category = category_id
-        print(request.user.id) 
+        try:
+            usercat =UserCategory.objects.get(user_id = user, category_id = category)
+            if score == 80:
+                usercat.level += 0.4
+                messages.info(request, "0.4 points added to level")
+            elif score == 60:
+                usercat.level += 0.3
+                messages.info(request, "0.3 points added to level")
+            elif score == 100:
+                usercat.level += 0.5
+                messages.info(request, "0.5 points added to level")
+            else:
+                messages.info(request, "Score too low, level unaffected.")
+            usercat.save()
+        except:
+            usercat = UserCategory(user_id = user, category_id = category)
+            usercat.save()
+        # print(request.user.id) 
         return render(request, 'main_app/score.html', {
-            'questionList':questionList,
+            'questionList':questionList, 
             'wrongAnswers' : wrongAnswers,
             'score' : score 
         })
