@@ -23,12 +23,13 @@ class CategoryList(ListView):
 ################################################
 def take_quiz(request, category_id):
     if request.method == 'GET':
+        print(category_id) 
         quiz = Quiz.objects.filter(category_id=category_id, isApproved = True).order_by(
             Random())[:5]
         messages.info(request, "Good luck")
         quiz_id = []
         for id in quiz:
-            quiz_id.append(id.id)
+            quiz_id.append(id.id) 
         request.session['quiz_id'] = quiz_id
         return render(request, "main_app/quiz.html", {"quiz": quiz})
     elif request.method == 'POST':
@@ -41,17 +42,18 @@ def take_quiz(request, category_id):
         print('counter', counter)
         for i in range(1,6):
             answers.append(request.POST.get(f'answer{i}'))
-        questions = request.session.get('questions')
+        questions = request.session.get('quiz_id')
         for q in questions:
-            questionList.append(Exercise.objects.get(id = q)) 
-            correctAnswers.append(Exercise.objects.get(id = q).correctAnswer)
+            print(q) 
+            questionList.append(Quiz.objects.get(id = q)) 
+            correctAnswers.append(Quiz.objects.get(id = q).correctAnswer)
         for a in answers: 
             if a == correctAnswers[counter]:
                 score +=20
             elif a!= correctAnswers[counter]:
-                wrongAnswers.append(f"{questionList[counter].question}, {a}")
+                wrongAnswers.append(f"{questionList[counter].qustion}, {a}")
             counter+=1
-
+        
         user = request.user.id 
         print("user", user)
         category = category_id
