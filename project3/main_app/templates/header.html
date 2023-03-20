@@ -6,11 +6,12 @@
             </ul>
             <ul class="right">
                 <li><a href="">About</a></li>
+                <li><a href="">Learn</a></li>
                 <li><a href="{% url 'categories' %}">Categories</a></li>
+                <li><a href="{% url 'contribute' %}">Contribute</a></li>
                 {% if user.is_authenticated %}
-                <li><a href="">Add Quiz</a></li>
-                <li>Hi {{user.username}} you are logged in</li>
-                <li><a href="{% url 'logout' %}">logout</a></li>
+                {% comment %} <li><a href="">Add Exercise</a></li> {% endcomment %}
+                <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">account_circle</i></a>&nbsp;</li>
                 {% else %}
                 <li><a href="{% url 'login' %}">Login</a></li>
                 <li><a href="{% url 'signup' %}">sign up</a></li>
@@ -18,4 +19,20 @@
             </ul>
         </div>
     </nav>
+    <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">Hi {{user.username}}</a></li>
+        <li><a href="#!">Your level: 0</a></li>
+        <li><a href="#!">Change Password</a></li>
+        <li class="divider"></li>
+        <li><a href="{% url 'logout' %}"><i class='bx bx-log-out'></i> logout</a></li>
+      </ul>
 </header>
+<script>
+    const elems = document.querySelectorAll('.dropdown-trigger');
+    const options = {
+        alignment: 'right',
+        coverTrigger: false,
+        constrainWidth:false,
+      };
+    M.Dropdown.init(elems,options);
+</script>
