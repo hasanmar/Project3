@@ -11,7 +11,7 @@
         <button class='btn deep-purple darken-2 select-answer' type="button">Option2</button>
         <button class='btn deep-purple darken-2 select-answer' type="button">Option3</button>
         <button class='btn deep-purple darken-2 select-answer' type="button">Option4</button>
-        <input type="submit" value="Sumbit" class="btn right red">
+        <input type="submit" value="Sumbit" class="btn right red" id="submit">
     </div>
    
 </form>
@@ -21,6 +21,7 @@
 
 <script>
     const inputCorrect = document.querySelector('#id_correctAnswer')
+    const submit = document.querySelector('#submit')
     const buttonSelect = document.querySelectorAll('.select-answer')
     inputCorrect.setAttribute('disabled','')
     const exerOpt=[]
@@ -31,6 +32,9 @@
         btn.addEventListener('click',(e)=>{
             inputCorrect.value = exerOpt[key].value
         })
+    })
+    submit.addEventListener('click',()=>{
+        inputCorrect.removeAttribute('disabled')
     })
 </script>
 {% endblock %}
