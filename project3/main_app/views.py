@@ -39,12 +39,10 @@ def take_quiz(request, category_id):
         wrongAnswers =[]
         score = 0
         counter = 0
-        print('counter', counter)
         for i in range(1,6):
             answers.append(request.POST.get(f'answer{i}'))
         questions = request.session.get('quiz_id')
         for q in questions:
-            print(q) 
             questionList.append(Quiz.objects.get(id = q)) 
             correctAnswers.append(Quiz.objects.get(id = q).correctAnswer)
         for a in answers: 
@@ -60,7 +58,7 @@ def take_quiz(request, category_id):
         userLevel = CustomUser.objects.get(id = user)
         usercat = UserCategory.objects.filter(user_id = user, category_id = category)
         if usercat: 
-            usercat =UserCategory.objects.get(user_id = user, category_id = category)
+            usercat = UserCategory.objects.get(user_id = user, category_id = category)
             usercat.attempts +=1
             if score == 80:
                 userLevel.level += 0.2
@@ -112,6 +110,7 @@ def take_quiz(request, category_id):
         })
 
 
+
 ################################################
 ##                  Exercise                 ##
 ################################################
@@ -151,8 +150,6 @@ def take_exercise(request, category_id):
             'wrongAnswers' : wrongAnswers,
             'score' : score 
         })
-        # messages.success(request, "exercise submitted")
-        # return redirect('home')
 
 
 ################################################
