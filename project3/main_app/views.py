@@ -23,7 +23,7 @@ class CategoryList(ListView):
 ################################################
 def take_quiz(request, category_id):
     if request.method == 'GET':
-        quiz = Quiz.objects.filter(category_id=category_id).order_by(
+        quiz = Quiz.objects.filter(category_id=category_id, isApproved = True).order_by(
             Random())[:5]
         messages.info(request, "Good luck")
         quiz_id = []
@@ -76,7 +76,7 @@ def take_quiz(request, category_id):
                 messages.info(request, "0.5 points added to category level")
                 messages.info(request, "0.3 points added to overall level")
             else:
-                messages.info(request, "Score too low, level unaffected.")
+                messages.warning(request, "Score too low, level unaffected.")
             usercat.save()
             userLevel.save()
         else:
@@ -98,7 +98,7 @@ def take_quiz(request, category_id):
                 messages.info(request, "0.5 points added to category level")
                 messages.info(request, "0.3 points added to overall level")
             else:
-                messages.info(request, "Score too low, level unaffected.")
+                messages.warning(request, "Score too low, level unaffected.")
             userLevel.save()
             usercat.save()
         
