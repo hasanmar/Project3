@@ -117,3 +117,9 @@ blockquote:hover {
         top: 0;
     }
 }
+
+/* Home Page */
+#hero {
+    background-image: url('/static/images/assets/webdeveloper_1.jpg');
+    background-color: #721c24;
+}
