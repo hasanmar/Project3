@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% load static %}
+
+<section class="container" id="contribute"> 
+<h1> contribute </h1>
+  <ul id="tabs-swipe-demo" class="tabs">
+    <li class="tab col s3"><a class="active" href="#test-swipe-1">Add Exercise</a></li>
+    <li class="tab col s3"><a href="#test-swipe-2">Add Quiz</a></li>
+  </ul>
+  <div id="test-swipe-1" class="col s12">
+    <div style="padding-bottom: 10px;"></div>
+        {% for i in object_list %}
+        <span class="col s4 block">
+        <a class="btn deep-purple lighten-2" href="{% url 'add_exercise' i.id %}">{{i.name}}</a>
+    </span>
+        {% endfor %}
+  </div>
+  <div id="test-swipe-2" class="col s12">
+    <div style="padding-bottom: 10px;"></div>
+    {% for i in object_list %}
+    <span class="col s4 block">
+    <a class="btn deep-purple lighten-2" href="{% url 'add_exercise' i.id %}">{{i.name}}</a>
+</span>
+    {% endfor %}
+</div>
+  </div>
+
+<script>
+    const tabs = document.querySelectorAll('.tabs') 
+    M.Tabs.init(tabs,{swipeable:true});
+</script>
+
+</section>
+{% endblock %}

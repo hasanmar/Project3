@@ -15,6 +15,6 @@ urlpatterns = [
 
     path("category/<int:category_id>/quiz", views.take_quiz, name="quiz"),
     path("category/<int:category_id>/exercise", views.take_exercise, name="exercise"),
-    
-    path("category/<int:category_id>/addexercise", views.AddExercise.as_view(), name='add_exercise'),
+    path("contribute/",views.ContributeCategoryList.as_view(),name="contribute"),
+    path("categories/<int:category_id>/addexercise", views.AddExercise.as_view(), name='add_exercise'),
 ]

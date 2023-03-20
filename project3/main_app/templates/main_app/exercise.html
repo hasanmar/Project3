@@ -2,7 +2,9 @@
 
 {% block content %}
 <h1>Exercise: {{exercise.first.category}}</h1>
-
+<div style="display: flex;"><div class="progress">
+    <div class="determinate" id="progress-bar" style="width: 0"></div> 
+</div><div id="q-id">1/5</div></div>
 <form action="" method="post">
     {% csrf_token %}
 {% for i in exercise %}
@@ -51,16 +53,23 @@
 </form>
     <script>
         let counter = 0
+        let progress = 0
+        const progressBar = document.querySelector('#progress-bar')    
         const lists = document.querySelectorAll('blockquote')
         const all = document.querySelectorAll('*')
         const answers = document.querySelectorAll('.hidden-answer')
         const ques = document.querySelectorAll('.ques')
         const btnNext = document.querySelectorAll('.next')
         const btnSumbit = document.querySelector('input[type=submit]')
+        const qId = document.querySelector('#q-id')
         ques[counter].classList.remove('hide')
         function nextHandler(e){
             ques[counter].classList.add('hide')
             counter++
+            progress+=20
+            progressBar.style.width=`${progress}%`
+            qId.innerText=`${counter+1}/5`
+
             if (counter>3){
                 btnSumbit.classList.remove('hide')
                 btnNext[counter].classList.add('hide')}
