@@ -140,6 +140,9 @@ class CustomLoginView(LoginView):
             self.request,
             f'Welcome back, {username}! You have successfully signed in.')
         return super().form_valid(form)
+    def form_invalid(self, form):
+        messages.error(self.request, 'Incorrect Username or Password')
+        return super().form_invalid(form)
 
 
 
