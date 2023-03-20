@@ -198,26 +198,29 @@ class CustomLoginView(LoginView):
         return super().form_invalid(form)
 
 
-#Add quiz
+################################################
+##                  Add Quiz                  ##
+################################################
 class AddQuiz(CreateView):
     model = Quiz
     fields = [
         'qustion', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
     ]
-    success_url = '/'
 
-    #function to add quiz
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid form entries')
+        return super().form_invalid(form)
+
     def form_valid(self, form):
         form.instance.category_id = self.kwargs['category_id']
-        #self.requset.user is logged user
         form.instance.user = self.request.user
-        #Allows createview from valid method to do its normal work
+        messages.success(self.request, 'Quiz submitted!')
         return super().form_valid(form)
 
 
-### Add Exercises ###
-
-
+################################################
+##              Add Exercises                 ##
+################################################
 class AddExercise(CreateView):
     model = Exercise
     fields = [
@@ -233,9 +236,6 @@ class AddExercise(CreateView):
         form.instance.user = self.request.user
         messages.success(self.request, 'Exercise submitted!')
         return super().form_valid(form)
-
-
-############################
 
 
 ################################################

@@ -45,6 +45,9 @@ class Exercise(models.Model):
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     isApproved = models.BooleanField(default=False)
 
+    def get_absolute_url(self):
+        return reverse("contribute")
+
 
 class Quiz(models.Model):
     qustion = models.TextField(max_length=500)
@@ -55,3 +58,6 @@ class Quiz(models.Model):
     correctAnswer = models.CharField(max_length=150)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     isApproved = models.BooleanField(default=False)
+
+    def get_absolute_url(self):
+        return reverse("contribute")
