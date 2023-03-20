@@ -5,25 +5,10 @@ from django.contrib.auth.views import LoginView
 from django.db.models.functions import Random
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-<<<<<<< HEAD
-from django.views.generic import ListView, DetailView, CreateView, TemplateView
+from django.views.generic import ListView, DetailView, CreateView,DeleteView
 
 from .models import Category, Quiz, Exercise, UserCategory, CustomUser
 from .forms import UserCreationForm, AddExerciseForm
-
-
-=======
-from django.views.generic import ListView, DetailView,CreateView, DeleteView
-from .models import Category, Quiz, Exercise, CustomUser
-from django.views.generic import ListView, DetailView
-from django.views.generic import ListView, DetailView, CreateView
-
-
-from .models import Category, Quiz, Exercise, CustomUser
-from main_app.forms import UserCreationForm, AddExerciseForm
-from .models import Category, Quiz, Exercise, UserCategory
-from main_app.forms import UserCreationForm
->>>>>>> b921b7d6cb4e9e4997e9f19df4d763d19930e67d
 
 
 def index(request):
@@ -151,13 +136,9 @@ class CustomLoginView(LoginView):
             self.request,
             f'Welcome back, {username}! You have successfully signed in.')
         return super().form_valid(form)
-<<<<<<< HEAD
     def form_invalid(self, form):
         messages.error(self.request, 'Incorrect Username or Password')
         return super().form_invalid(form)
-=======
-    
->>>>>>> b921b7d6cb4e9e4997e9f19df4d763d19930e67d
 
 #Add quiz
 class AddQuiz(CreateView):
@@ -193,7 +174,6 @@ class AddExercise(CreateView):
 
 
 ############################
-<<<<<<< HEAD
 
 ################################################
 ##                 contribute                 ##
@@ -203,5 +183,3 @@ class ContributeCategoryList(ListView):
     template_name = "main_app/contribute.html"
 
 
-=======
->>>>>>> b921b7d6cb4e9e4997e9f19df4d763d19930e67d
