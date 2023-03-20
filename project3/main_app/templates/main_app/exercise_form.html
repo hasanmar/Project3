@@ -1,13 +1,36 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<section class="container">
 <h1>Add Exercise</h1>
 
 <form method="post">{% csrf_token %}
     {{ form.as_p }}
-    <input type="submit" value="Save">
+    <div> <strong>Choose correct answer: </strong>
+        <button class='btn deep-purple darken-2 select-answer' type="button">Option1</button>
+        <button class='btn deep-purple darken-2 select-answer' type="button">Option2</button>
+        <button class='btn deep-purple darken-2 select-answer' type="button">Option3</button>
+        <button class='btn deep-purple darken-2 select-answer' type="button">Option4</button>
+        <input type="submit" value="Sumbit" class="btn right red">
+    </div>
+   
 </form>
 
+</section>
 
 
+<script>
+    const inputCorrect = document.querySelector('#id_correctAnswer')
+    const buttonSelect = document.querySelectorAll('.select-answer')
+    inputCorrect.setAttribute('disabled','')
+    const exerOpt=[]
+    for (let i=1;i<5;i++){
+        exerOpt.push(document.querySelector(`#id_option${i}`))
+    }
+    buttonSelect.forEach((btn,key)=>{
+        btn.addEventListener('click',(e)=>{
+            inputCorrect.value = exerOpt[key].value
+        })
+    })
+</script>
 {% endblock %}
