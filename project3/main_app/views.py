@@ -138,17 +138,6 @@ class AddQuiz(CreateView):
         return super().form_valid(form)
     
 
- 
-
-
-
-
-
-
-
-
-
-
 
 
 ### Add Exercises ###
