@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView
 from django.db.models.functions import Random
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView,DeleteView
+from django.views.generic import ListView, DetailView, CreateView, DeleteView
 
 from .models import Category, Quiz, Exercise, UserCategory, CustomUser
 from .forms import UserCreationForm, AddExerciseForm
@@ -18,25 +18,26 @@ def index(request):
 class CategoryList(ListView):
     model = Category
 
+
 ################################################
 ##                    Quiz                   ##
 ################################################
 def take_quiz(request, category_id):
     if request.method == 'GET':
-        print(category_id) 
-        quiz = Quiz.objects.filter(category_id=category_id, isApproved = True).order_by(
-            Random())[:5]
+        print(category_id)
+        quiz = Quiz.objects.filter(category_id=category_id,
+                                   isApproved=True).order_by(Random())[:5]
         messages.info(request, "Good luck")
         quiz_id = []
         for id in quiz:
-            quiz_id.append(id.id) 
+            quiz_id.append(id.id)
         request.session['quiz_id'] = quiz_id
         return render(request, "main_app/quiz.html", {"quiz": quiz})
     elif request.method == 'POST':
-        answers =[]
-        questionList =[]
-        correctAnswers =[]
-        wrongAnswers =[]
+        answers = []
+        questionList = []
+        correctAnswers = []
+        wrongAnswers = []
         score = 0
         counter = 0
         for i in range(1,6):
@@ -47,12 +48,12 @@ def take_quiz(request, category_id):
             correctAnswers.append(Quiz.objects.get(id = q).correctAnswer)
         for a in answers: 
             if a == correctAnswers[counter]:
-                score +=20
-            elif a!= correctAnswers[counter]:
+                score += 20
+            elif a != correctAnswers[counter]:
                 wrongAnswers.append(f"{questionList[counter].qustion}, {a}")
-            counter+=1
-        
-        user = request.user.id 
+            counter += 1
+
+        user = request.user.id
         print("user", user)
         category = category_id
         userLevel = CustomUser.objects.get(id = user)
@@ -80,8 +81,8 @@ def take_quiz(request, category_id):
             usercat.save()
             userLevel.save()
         else:
-            usercat = UserCategory(user_id = user, category_id = category)
-            usercat.attempts +=1
+            usercat = UserCategory(user_id=user, category_id=category)
+            usercat.attempts += 1
             if score == 80:
                 userLevel.level += 0.2
                 usercat.level += 0.4
@@ -101,13 +102,13 @@ def take_quiz(request, category_id):
                 messages.warning(request, "Score too low, level unaffected.")
             userLevel.save()
             usercat.save()
-        
 
-        return render(request, 'main_app/score.html', {
-            'questionList':questionList, 
-            'wrongAnswers' : wrongAnswers,
-            'score' : score 
-        })
+        return render(
+            request, 'main_app/score.html', {
+                'questionList': questionList,
+                'wrongAnswers': wrongAnswers,
+                'score': score
+            })
 
 
 
@@ -116,8 +117,9 @@ def take_quiz(request, category_id):
 ################################################
 def take_exercise(request, category_id):
     if request.method == 'GET':
-        exercise = Exercise.objects.filter(category_id=category_id, isApproved = True).order_by(
-            Random())[:5]
+        exercise = Exercise.objects.filter(category_id=category_id,
+                                           isApproved=True).order_by(
+                                               Random())[:5]
         messages.info(request, "Good luck")
         questions = []
         for id in exercise:
@@ -126,23 +128,23 @@ def take_exercise(request, category_id):
         return render(request, "main_app/exercise.html",
                       {"exercise": exercise})
     elif request.method == 'POST':
-        answers =[]
-        questionList =[]
-        correctAnswers =[]
-        wrongAnswers =[]
+        answers = []
+        questionList = []
+        correctAnswers = []
+        wrongAnswers = []
         score = 0
         counter = 0
         print('counter', counter)
-        for i in range(1,6):
+        for i in range(1, 6):
             answers.append(request.POST.get(f'answer{i}'))
         questions = request.session.get('questions')
         for q in questions:
-            questionList.append(Exercise.objects.get(id = q)) 
-            correctAnswers.append(Exercise.objects.get(id = q).correctAnswer)
-        for a in answers: 
+            questionList.append(Exercise.objects.get(id=q))
+            correctAnswers.append(Exercise.objects.get(id=q).correctAnswer)
+        for a in answers:
             if a == correctAnswers[counter]:
-                score +=20
-            elif a!= correctAnswers[counter]:
+                score += 20
+            elif a != correctAnswers[counter]:
                 wrongAnswers.append(f"{questionList[counter].question}, {a}")
             counter+=1
         return render(request, 'main_app/score.html', {
@@ -184,44 +186,51 @@ class CustomLoginView(LoginView):
             self.request,
             f'Welcome back, {username}! You have successfully signed in.')
         return super().form_valid(form)
+
     def form_invalid(self, form):
         messages.error(self.request, 'Incorrect Username or Password')
         return super().form_invalid(form)
 
-#Add quiz
+
+################################################
+##                  Add Quiz                  ##
+################################################
 class AddQuiz(CreateView):
-    model = Quiz   
-    fields = ['qustion', 'option1', 'option2', 'option3','option4', 'correctAnswer']
-    success_url = '/' 
-     
-     #function to add quiz
-    def form_valid(self, form): 
-        form.instance.category_id = self.kwargs['category_id']
-        #self.requset.user is logged user
-        form.instance.user = self.request.user
-        #Allows createview from valid method to do its normal work
-        return super().form_valid(form)
-    
+    model = Quiz
+    fields = [
+        'qustion', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
+    ]
 
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid form entries')
+        return super().form_invalid(form)
 
-
-### Add Exercises ###
-
-class AddExercise(CreateView):
-    model = Exercise
-    fields = ['question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer']
-    success_url = '/'
-
-    # def get_success_url(self):
-    #     return reverse()
-    
     def form_valid(self, form):
         form.instance.category_id = self.kwargs['category_id']
         form.instance.user = self.request.user
+        messages.success(self.request, 'Quiz submitted!')
         return super().form_valid(form)
 
 
-############################
+################################################
+##              Add Exercises                 ##
+################################################
+class AddExercise(CreateView):
+    model = Exercise
+    fields = [
+        'question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
+    ]
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid form entries')
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.category_id = self.kwargs['category_id']
+        form.instance.user = self.request.user
+        messages.success(self.request, 'Exercise submitted!')
+        return super().form_valid(form)
+
 
 ################################################
 ##                 contribute                 ##
@@ -229,5 +238,3 @@ class AddExercise(CreateView):
 class ContributeCategoryList(ListView):
     model = Category
     template_name = "main_app/contribute.html"
-
-
