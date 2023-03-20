@@ -119,7 +119,8 @@ blockquote:hover {
 }
 
 /* Home Page */
-#hero {
-    background-image: url('/static/images/assets/webdeveloper_1.jpg');
-    background-color: #721c24;
+#home-background {
+    background-image: url('../images/assets/webdeveloper_1.jpg');
+    background-size: cover;
+    height: 100vh;
 }

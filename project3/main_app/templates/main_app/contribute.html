@@ -5,40 +5,32 @@
 
 <section class="container" id="contribute"> 
 <h1> contribute </h1>
-<div class="row">
-{% for i in object_list %}
-  <div class="col s4 m4 l4 m2 mg">
-    <div class="card z-depth-1">
-
-      <div class="card-image waves-effect waves-block waves-light">
-        <img class="activator" src="{% static i.imagePath %}">
-      </div>
-
-      <div class="card-content">
-        <span class="card-title activator grey-text text-darken-4"><strong>{{i.name}}</strong><i class="material-icons right">more_vert</i></span>
-        
-        <div class="card-action">
-          <a href="{% url 'exercise' i.id %}" class="btn waves-effect waves-light deep-purple lighten-2"> Exercise </a>
-          <a href="{% url 'quiz' i.id %}" class="btn waves-effect waves-light red darken-1 right"> Quiz </a>
-        </div>
-
-      </div>
-
-      <div class="card-reveal">
-        <span class="card-title grey-text text-darken-4">{{i.name}}<i class="material-icons right">close</i></span>
-        <p class="card-title flow-text" style="min-height: 82%;">{{i.description}}</p>
-      </div>
-
-    </div>
+  <ul id="tabs-swipe-demo" class="tabs">
+    <li class="tab col s3"><a class="active" href="#test-swipe-1">Add Exercise</a></li>
+    <li class="tab col s3"><a href="#test-swipe-2">Add Quiz</a></li>
+  </ul>
+  <div id="test-swipe-1" class="col s12">
+    <div style="padding-bottom: 10px;"></div>
+        {% for i in object_list %}
+        <span class="col s4 block">
+        <a class="btn deep-purple lighten-2" href="{% url 'add_exercise' i.id %}">{{i.name}}</a>
+    </span>
+        {% endfor %}
+  </div>
+  <div id="test-swipe-2" class="col s12">
+    <div style="padding-bottom: 10px;"></div>
+    {% for i in object_list %}
+    <span class="col s4 block">
+    <a class="btn deep-purple lighten-2" href="{% url 'add_exercise' i.id %}">{{i.name}}</a>
+</span>
+    {% endfor %}
+</div>
   </div>
 
-
-
-{% endfor %}
-</div>
-
-
-
+<script>
+    const tabs = document.querySelectorAll('.tabs') 
+    M.Tabs.init(tabs,{swipeable:true});
+</script>
 
 </section>
 {% endblock %}
