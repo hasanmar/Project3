@@ -7,15 +7,10 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
-<<<<<<< HEAD
 from .models import Category, Quiz, Exercise, UserCategory, CustomUser
-=======
+from .forms import UserCreationForm, AddExerciseForm
 
-from .models import Category, Quiz, Exercise, CustomUser
-from main_app.forms import UserCreationForm, AddExerciseForm
-from .models import Category, Quiz, Exercise, UserCategory
->>>>>>> b0d45ed0181281da5ba145a4f878e58ae82e4106
-from main_app.forms import UserCreationForm
+
 
 
 def index(request):
