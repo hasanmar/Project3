@@ -4,7 +4,7 @@
 {% load static %}
 
 <section class="container" id="contribute"> 
-<h1> contribute </h1>
+<h1> Contribute </h1>
   <ul id="tabs-swipe-demo" class="tabs">
     <li class="tab col s3"><a class="active" href="#test-swipe-1">Add Exercise</a></li>
     <li class="tab col s3"><a href="#test-swipe-2">Add Quiz</a></li>
@@ -21,7 +21,7 @@
     <div style="padding-bottom: 10px;"></div>
     {% for i in object_list %}
     <span class="col s4 block">
-    <a class="btn deep-purple lighten-2" href="{% url 'add_exercise' i.id %}">{{i.name}}</a>
+    <a class="btn deep-purple lighten-2" href="{% url 'add_quiz' i.id %}">{{i.name}}</a>
 </span>
     {% endfor %}
 </div>
