@@ -7,14 +7,10 @@ from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, DetailView, CreateView
 
-<<<<<<< HEAD
-from .models import Category, Quiz, Exercise, UserCategory, CustomUser
-=======
 
 from .models import Category, Quiz, Exercise, CustomUser
 from main_app.forms import UserCreationForm, AddExerciseForm
 from .models import Category, Quiz, Exercise, UserCategory
->>>>>>> b0d45ed0181281da5ba145a4f878e58ae82e4106
 from main_app.forms import UserCreationForm
 
 
@@ -41,8 +37,82 @@ def take_quiz(request, category_id):
         request.session['quiz_id'] = quiz_id
         return render(request, "main_app/quiz.html", {"quiz": quiz})
     elif request.method == 'POST':
-        messages.success(request, "quiz submitted")
-        return redirect('home')
+        answers =[]
+        questionList =[]
+        correctAnswers =[]
+        wrongAnswers =[]
+        score = 0
+        counter = 0
+        print('counter', counter)
+        for i in range(1,6):
+            answers.append(request.POST.get(f'answer{i}'))
+        questions = request.session.get('questions')
+        for q in questions:
+            questionList.append(Exercise.objects.get(id = q)) 
+            correctAnswers.append(Exercise.objects.get(id = q).correctAnswer)
+        for a in answers: 
+            if a == correctAnswers[counter]:
+                score +=20
+            elif a!= correctAnswers[counter]:
+                wrongAnswers.append(f"{questionList[counter].question}, {a}")
+            counter+=1
+
+        user = request.user.id 
+        print("user", user)
+        category = category_id
+        userLevel = CustomUser.objects.get(id = user)
+        usercat = UserCategory.objects.filter(user_id = user, category_id = category)
+        if usercat: 
+            usercat =UserCategory.objects.get(user_id = user, category_id = category)
+            usercat.attempts +=1
+            if score == 80:
+                userLevel.level += 0.2
+                usercat.level += 0.4
+                messages.info(request, "0.4 points added to category level")
+                messages.info(request, "0.2 points added to overall level")
+            elif score == 60:
+                userLevel.level += 0.1
+                usercat.level += 0.3
+                messages.info(request, "0.3 points added to category level")
+                messages.info(request, "0.1 points added to overall level")
+            elif score == 100:
+                userLevel.level += 0.3
+                usercat.level += 0.5
+                messages.info(request, "0.5 points added to category level")
+                messages.info(request, "0.3 points added to overall level")
+            else:
+                messages.info(request, "Score too low, level unaffected.")
+            usercat.save()
+            userLevel.save()
+        else:
+            usercat = UserCategory(user_id = user, category_id = category)
+            usercat.attempts +=1
+            if score == 80:
+                userLevel.level += 0.2
+                usercat.level += 0.4
+                messages.info(request, "0.4 points added to category level")
+                messages.info(request, "0.2 points added to overall level")
+            elif score == 60:
+                userLevel.level += 0.1
+                usercat.level += 0.3
+                messages.info(request, "0.3 points added to category level")
+                messages.info(request, "0.1 points added to overall level")
+            elif score == 100:
+                userLevel.level += 0.3
+                usercat.level += 0.5
+                messages.info(request, "0.5 points added to category level")
+                messages.info(request, "0.3 points added to overall level")
+            else:
+                messages.info(request, "Score too low, level unaffected.")
+            userLevel.save()
+            usercat.save()
+        
+
+        return render(request, 'main_app/score.html', {
+            'questionList':questionList, 
+            'wrongAnswers' : wrongAnswers,
+            'score' : score 
+        })
 
 
 ################################################
@@ -50,7 +120,7 @@ def take_quiz(request, category_id):
 ################################################
 def take_exercise(request, category_id):
     if request.method == 'GET':
-        exercise = Exercise.objects.filter(category_id=category_id).order_by(
+        exercise = Exercise.objects.filter(category_id=category_id, isApproved = True).order_by(
             Random())[:5]
         messages.info(request, "Good luck")
         questions = []
@@ -75,35 +145,10 @@ def take_exercise(request, category_id):
             correctAnswers.append(Exercise.objects.get(id = q).correctAnswer)
         for a in answers: 
             if a == correctAnswers[counter]:
-                if counter <5:
-                    counter+= 1
                 score +=20
             elif a!= correctAnswers[counter]:
-                if counter<5: 
-                    counter+=1
                 wrongAnswers.append(f"{questionList[counter].question}, {a}")
-
-        user = request.user.id 
-        print("user", user)
-        category = category_id
-        try:
-            usercat =UserCategory.objects.get(user_id = user, category_id = category)
-            if score == 80:
-                usercat.level += 0.4
-                messages.info(request, "0.4 points added to level")
-            elif score == 60:
-                usercat.level += 0.3
-                messages.info(request, "0.3 points added to level")
-            elif score == 100:
-                usercat.level += 0.5
-                messages.info(request, "0.5 points added to level")
-            else:
-                messages.info(request, "Score too low, level unaffected.")
-            usercat.save()
-        except:
-            usercat = UserCategory(user_id = user, category_id = category)
-            usercat.save()
-        # print(request.user.id) 
+            counter+=1
         return render(request, 'main_app/score.html', {
             'questionList':questionList, 
             'wrongAnswers' : wrongAnswers,
