@@ -20,7 +20,7 @@
         </div>
     </nav>
     <ul id="dropdown1" class="dropdown-content">
-        <li><a href="#!">Hi {{user.username}}</a></li>
+        <li><a href="{% url 'profile' pk=user.id %}">Hi {{user.username}}</a></li>
         <li><a href="#!">Your level: 0</a></li>
         <li><a href="#!">Change Password</a></li>
         <li class="divider"></li>
