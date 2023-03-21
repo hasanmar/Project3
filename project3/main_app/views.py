@@ -1,28 +1,21 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView
+from django.contrib.auth.forms import PasswordChangeForm,PasswordResetForm
+from django.contrib.sites.shortcuts import get_current_site  
+from django.core.mail import EmailMessage  
 from django.db.models.functions import Random
 from django.http import HttpResponse
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
-from .models import Category, Quiz, Exercise, CustomUser, UserCategory
+from django.template.loader import render_to_string  
 from django.views.generic import ListView, DetailView, CreateView
-from main_app.forms import UserCreationForm, AddExerciseForm
-from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
-from .forms import NewPasswordResetForm, NewSetPasswordForm
-
-
-from django.contrib.sites.shortcuts import get_current_site  
+from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str  
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode  
-from django.template.loader import render_to_string  
+from .forms import UserCreationForm
+from .models import Category, Quiz, Exercise, CustomUser, UserCategory
 from .tokens import account_activation_token   
-from django.contrib.auth.models import User  
-from django.core.mail import EmailMessage  
-
-
-
 
 
 def index(request):
@@ -267,27 +260,14 @@ class ContributeCategoryList(ListView):
     template_name = "main_app/contribute.html"
 ############################
 
-class NewPasswordResetView(PasswordResetView):
-    form_class = NewPasswordResetForm
-    template_name = 'reset_password.html'
-    success_url = '/login/'
+# class NewPasswordResetView(PasswordResetView):
+#     form_class = PasswordResetForm
+#     success_url = '/login/'
 
-class NewPasswordResetConfirmView(PasswordResetConfirmView):
-    form_class = NewSetPasswordForm
-    template_name = 'reset_password_confirm.html'
-    success_url = '/login/'
+# class NewPasswordResetConfirmView(PasswordResetConfirmView):
+#     form_class = NewSetPasswordForm
+#     success_url = '/login/'
     
-def reset_password(request):
-    if request.method == 'POST':
-        form = NewPasswordResetForm(request.POST)
-        if form.is_valid():
-            form.save(request=request)
-            return redirect('login')
-    else:
-        form = NewPasswordResetForm()
-    return render(request, 'reset_password.html', {'form': form})
-
-
 
 
 ################################################
