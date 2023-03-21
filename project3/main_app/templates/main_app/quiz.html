@@ -46,7 +46,7 @@
             </blockquote>
             </li>
         </ul>
-        <input type="hidden" name="answer{{forloop.counter}}" class="hidden-answer">
+        <input type="hidden" name="answer{{forloop.counter}}" class="hidden-answer" value="">
             <button type="button" class="right next waves-effect waves-light btn disabled">&nbsp; next &nbsp;</button>
         </ul>
     </div>    
@@ -57,7 +57,7 @@
 </section>
 <script>
     let counter = 0
-    let timer = 30
+    let timer = 10
     let progress = 0
     const lists = document.querySelectorAll('blockquote')
     const all = document.querySelectorAll('*')

@@ -28,7 +28,6 @@ class CategoryList(ListView):
 ################################################
 def take_quiz(request, category_id):
     if request.method == 'GET':
-        print(category_id)
         quiz = Quiz.objects.filter(category_id=category_id,
                                    isApproved=True).order_by(Random())[:5]
         messages.info(request, "Good luck")
@@ -41,7 +40,7 @@ def take_quiz(request, category_id):
         answers = []
         questionList = []
         correctAnswers = []
-        wrongAnswers = []
+        all_answers = []
         score = 0
         counter = 0
         for i in range(1,6):
@@ -53,12 +52,12 @@ def take_quiz(request, category_id):
         for a in answers: 
             if a == correctAnswers[counter]:
                 score += 20
+                all_answers.append([True,questionList[counter].qustion])
             elif a != correctAnswers[counter]:
-                wrongAnswers.append(f"{questionList[counter].qustion}, {a}")
+                all_answers.append([False,questionList[counter].qustion])
             counter += 1
 
         user = request.user.id
-        print("user", user)
         category = category_id
         userLevel = CustomUser.objects.get(id = user)
         usercat = UserCategory.objects.filter(user_id = user, category_id = category)
@@ -106,11 +105,10 @@ def take_quiz(request, category_id):
                 messages.warning(request, "Score too low, level unaffected.")
             userLevel.save()
             usercat.save()
-
         return render(
             request, 'main_app/score.html', {
                 'questionList': questionList,
-                'wrongAnswers': wrongAnswers,
+                'all_answers': all_answers,
                 'score': score
             })
 
@@ -138,7 +136,6 @@ def take_exercise(request, category_id):
         wrongAnswers = []
         score = 0
         counter = 0
-        print('counter', counter)
         for i in range(1, 6):
             answers.append(request.POST.get(f'answer{i}'))
         questions = request.session.get('questions')
@@ -149,8 +146,8 @@ def take_exercise(request, category_id):
             if a == correctAnswers[counter]:
                 score += 20
             elif a != correctAnswers[counter]:
-                wrongAnswers.append(f"{questionList[counter].question}, {a}")
-            counter+=1
+                wrongAnswers.append([questionList[counter].qustion, a])
+            counter+=1            
         return render(request, 'main_app/score.html', {
             'questionList':questionList, 
             'wrongAnswers' : wrongAnswers,
