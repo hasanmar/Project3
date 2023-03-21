@@ -21,7 +21,7 @@
     </nav>
     <ul id="dropdown1" class="dropdown-content">
         <li><a href="#!">Hi {{user.username}}</a></li>
-        <li><a href="#!">Your level: 0</a></li>
+        <li><a href="#!">Your level: {{user.level|floatformat:-2}}</a></li>
         <li><a href="#!">Change Password</a></li>
         <li class="divider"></li>
         <li><a href="{% url 'logout' %}"><i class='bx bx-log-out'></i> logout</a></li>
