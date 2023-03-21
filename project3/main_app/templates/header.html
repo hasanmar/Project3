@@ -10,7 +10,6 @@
                 <li><a href="{% url 'categories' %}">Categories</a></li>
                 <li><a href="{% url 'contribute' %}">Contribute</a></li>
                 {% if user.is_authenticated %}
-                {% comment %} <li><a href="">Add Exercise</a></li> {% endcomment %}
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">account_circle</i></a>&nbsp;</li>
                 {% else %}
                 <li><a href="{% url 'login' %}">Login</a></li>
@@ -20,6 +19,9 @@
         </div>
     </nav>
     <ul id="dropdown1" class="dropdown-content">
+        <li><a href="#!">Hi {{user.username}}</a></li>
+        <li><a href="#!">Your level: {{user.level|floatformat:-2}}</a></li>
+        <li><a href="{% url 'password_change' %}">Change Password</a></li>
         <li><a href="{% url 'profile' pk=user.id %}">Hi {{user.username}}</a></li>
         <li><a href="#!">Your level: 0</a></li>
         <li><a href="#!">Change Password</a></li>
