@@ -107,7 +107,6 @@ def take_quiz(request, category_id):
             usercat.save()
         return render(
             request, 'main_app/score.html', {
-                'questionList': questionList,
                 'all_answers': all_answers,
                 'score': score
             })
@@ -133,7 +132,7 @@ def take_exercise(request, category_id):
         answers = []
         questionList = []
         correctAnswers = []
-        wrongAnswers = []
+        all_answers = []
         score = 0
         counter = 0
         for i in range(1, 6):
@@ -145,12 +144,12 @@ def take_exercise(request, category_id):
         for a in answers:
             if a == correctAnswers[counter]:
                 score += 20
+                all_answers.append([True,questionList[counter].question])
             elif a != correctAnswers[counter]:
-                wrongAnswers.append([questionList[counter].qustion, a])
+                all_answers.append([False,questionList[counter].question])
             counter+=1            
         return render(request, 'main_app/score.html', {
-            'questionList':questionList, 
-            'wrongAnswers' : wrongAnswers,
+            'all_answers' : all_answers,
             'score' : score 
         })
 
