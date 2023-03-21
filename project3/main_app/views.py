@@ -303,5 +303,4 @@ def activate(request, uidb64, token):
 class Profile(DetailView):
     model = CustomUser
     template_name = 'profile.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
+    
