@@ -36,4 +36,3 @@ class AddExerciseForm(forms.ModelForm):
     class Meta:
         model = Exercise
         fields = ['question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer']
-
