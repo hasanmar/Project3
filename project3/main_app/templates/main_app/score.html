@@ -1,20 +1,33 @@
 {% extends 'base.html' %}
 
 {% block content %}
-
+<style>
+    .collapsible-header{
+        cursor:unset
+    }
+</style>
+<section class="container">
 <h1>Score</h1>
-{% for q in questionList %}
-
-{{q.question}}
-
-{% endfor %}
-
-<h1>Wrong answers:</h1>
-{% for w in wrongAnswers %}
-<h1>{{forloop.counter}}</h1>
-{{w}}
-{% endfor %}
-
-
 <h1> score: {{ score }} </h1>
+<h1>Your answers:</h1>
+<ul class="collapsible">
+{% for answer in all_answers %}
+<li>
+    <div class="collapsible-header">
+{% if answer.0 %}
+right: {{answer.1}}
+{% else %}
+wrong:\f058 {{answer.1}}
+{% endif %}
+</div>
+</li> 
+{% endfor %}
+</ul>
+
+
+</section>
+<script>
+    //const listAnswers = document.querySelectorAll('.collapsible');
+    //M.Collapsible.init(listAnswers)
+  </script>
 {% endblock %}

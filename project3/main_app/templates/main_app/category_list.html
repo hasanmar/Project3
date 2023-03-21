@@ -2,12 +2,12 @@
 
 {% block content %}
 {% load static %}
-
+<div class="category-img"></div>
 <section class="container" id="Categories"> 
 <h1> Categories </h1>
 <div class="row">
 {% for i in object_list %}
-  <div class="col s4 m4 l4 m2 mg">
+  <div class="col s4 mg">
     <div class="card z-depth-1">
 
       <div class="card-image waves-effect waves-block waves-light">
@@ -36,10 +36,6 @@
 
 {% endfor %}
 </div>
-
-
-
-
 </section>
 {% endblock %}
 

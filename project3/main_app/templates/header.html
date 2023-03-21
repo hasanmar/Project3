@@ -5,8 +5,8 @@
                 <li>&nbsp;&nbsp;<a href="{% url 'home' %}" class="left brand-logo">Quiz website</a></li>
             </ul>
             <ul class="right">
-                <li><a href="">About</a></li>
-                <li><a href="">Learn</a></li>
+                <li><a href="/">About</a></li>
+                <li><a href="/">Learn</a></li>
                 <li><a href="{% url 'categories' %}">Categories</a></li>
                 <li><a href="{% url 'contribute' %}">Contribute</a></li>
                 {% if user.is_authenticated %}
@@ -23,6 +23,7 @@
         <li><a href="{% url 'profile' pk=user.id %}">Hi {{user.username}}</a></li>
         <li><a href="#!">Your level: 0</a></li>
         <li><a href="#!">Change Password</a></li>
+>>>>>>> bd38e82a84a5d775172a0f722c5b222b85e7a7cb
         <li class="divider"></li>
         <li><a href="{% url 'logout' %}"><i class='bx bx-log-out'></i> logout</a></li>
       </ul>
