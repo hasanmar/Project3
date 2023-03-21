@@ -5,7 +5,7 @@
 <h1>Exercise: {{exercise.first.category}}</h1>
 <div style="display: flex;"><div class="progress">
     <div class="determinate" id="progress-bar" style="width: 0"></div> 
-</div><div id="q-id">1/{{ exercise|length }}</div></div>
+</div><div style="font-weight:500; font-size: 20px; position: relative; top: -10px;">&nbsp;<span id="q-id">1</span>/{{ exercise|length }}</div></div>
 <form action="" method="post">
     {% csrf_token %}
 {% for i in exercise %}
@@ -71,7 +71,7 @@
             counter++
             progress+=(100/total)
             progressBar.style.width=`${progress}%`
-            qId.innerText=`${counter+1}/5`
+            qId.innerText=`${counter+1}`
 
             if (counter>total-2){
                 btnSumbit.classList.remove('hide')

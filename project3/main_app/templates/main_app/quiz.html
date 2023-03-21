@@ -5,7 +5,7 @@
 <h1>Quiz: {{quiz.first.category}}<span id="timer-display" class="right">30</span></h1>
 <div style="display: flex;"><div class="progress">
     <div class="determinate" id="progress-bar" style="width: 0"></div> 
-</div><div id="q-id">1/5</div></div>
+</div><div style="font-weight:500; font-size: 20px; position: relative; top: -10px;">&nbsp;<span id="q-id">1</span>/{{ quiz|length }}</div></div>
 
 <form action="" method="post">
     {% csrf_token %}
@@ -75,7 +75,7 @@
         counter++
         progress+=20
         progressBar.style.width=`${progress}%`
-        qId.innerText=`${counter+1}/5`
+        qId.innerText=`${counter+1}`
         if (counter>3){
             btnSumbit.classList.remove('hide')
             btnNext[counter].classList.add('hide')}
@@ -106,6 +106,9 @@ function countTime(){
             clearInterval(mytimer)
             timerText.innerHTML = "Time's up"
             form.submit()
+            ques.forEach(que=>{
+                //que.classList.add('hide')
+                btnSumbit.classList.add('hide')})
         }
 }
 

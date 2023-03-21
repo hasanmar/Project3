@@ -18,27 +18,23 @@
             </ul>
         </div>
     </nav>
+    {% if user.is_authenticated %}
     <ul id="dropdown1" class="dropdown-content">
-<<<<<<< HEAD
-        <li><a href="#!">Hi {{user.username}}</a></li>
-        <li><a href="#!">Your level: {{user.level|floatformat:-2}}</a></li>
-        <li><a href="{% url 'password_change' %}">Change Password</a></li>
-=======
         <li><a href="{% url 'profile' pk=user.id %}">Hi {{user.username}}</a></li>
-        <li><a href="#!">Your level: 0</a></li>
-        <li><a href="#!">Change Password</a></li>
->>>>>>> bd38e82a84a5d775172a0f722c5b222b85e7a7cb
->>>>>>> 0cc04abdb09bce03d8576d191c28423e459a6764
+        <li><a href="#">Your level: {{user.level|floatformat:-2}}</a></li>
+        <li><a href="{% url 'password_change' %}">Change Password</a></li>
         <li class="divider"></li>
         <li><a href="{% url 'logout' %}"><i class='bx bx-log-out'></i> logout</a></li>
       </ul>
+      {% endif %}
+
 </header>
 <script>
-    const elems = document.querySelectorAll('.dropdown-trigger');
+    const elemsDropdown = document.querySelectorAll('.dropdown-trigger');
     const options = {
         alignment: 'right',
         coverTrigger: false,
         constrainWidth:false,
       };
-    M.Dropdown.init(elems,options);
+    M.Dropdown.init(elemsDropdown,options);
 </script>
