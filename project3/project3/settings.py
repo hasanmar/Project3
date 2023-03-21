@@ -86,7 +86,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "anas029/project3",
         "USER": "anas029",
-        "PASSWORD": "v2_42BZE_4zuZeKEpbyUcBuhC3ch8WJe",
+        "PASSWORD": os.getenv('DBPASS_'),
         'HOST': 'db.bit.io',
         'PORT': '5432',
     }
@@ -156,4 +156,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('EMAIL_ADDY')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
+EMAIL_HOST_PASSWORD = os.getenv('ADDY_PASS')
