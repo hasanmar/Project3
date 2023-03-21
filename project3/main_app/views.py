@@ -3,6 +3,7 @@ from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
 from django.db.models.functions import Random
+from django.http import HttpResponse
 from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from .models import Category, Quiz, Exercise, CustomUser, UserCategory
@@ -10,6 +11,15 @@ from django.views.generic import ListView, DetailView, CreateView
 from main_app.forms import UserCreationForm, AddExerciseForm
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView
 from .forms import NewPasswordResetForm, NewSetPasswordForm
+
+
+from django.contrib.sites.shortcuts import get_current_site  
+from django.utils.encoding import force_bytes, force_str  
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode  
+from django.template.loader import render_to_string  
+from .tokens import account_activation_token   
+from django.contrib.auth.models import User  
+from django.core.mail import EmailMessage  
 
 
 
@@ -167,10 +177,27 @@ def signup(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
+            current_site = get_current_site(request)  
+            mail_subject = 'Activation link has been sent to your email id'  
+            message = render_to_string('acc_active_email.html', {  
+                'user': user,  
+                'domain': current_site.domain,  
+                'uid':urlsafe_base64_encode(force_bytes(user.pk)),  
+                'token':account_activation_token.make_token(user),  
+            })  
+            to_email = form.cleaned_data.get('email')  
+            email = EmailMessage(  
+                        mail_subject, message, to=[to_email]  
+            )  
+            email.send()  
             login(request, user)
             messages.success(
                 request,
                 f"Sign-up Successful! Welcome, {user.username}, to our community."
+            )
+            messages.success(
+                request,
+                f"Activation link has been sent to your email id."
             )
             return redirect("home")
         else:
@@ -265,3 +292,23 @@ def reset_password(request):
     return render(request, 'reset_password.html', {'form': form})
 
 
+
+
+################################################
+##                 Email Verification         ##
+################################################
+
+def activate(request, uidb64, token):  
+    user = CustomUser()  
+    try:  
+        uid = force_str(urlsafe_base64_decode(uidb64))  
+        user = CustomUser.objects.get(pk=uid)  
+    except(TypeError, ValueError, OverflowError, CustomUser.DoesNotExist):  
+        user = None  
+    if user is not None and account_activation_token.check_token(user, token):  
+        user.is_active = True  
+        user.save()
+        messages.success(request, 'Your email has been confirmed. Welcome to our website!')
+        return redirect('home')
+    else:  
+        return HttpResponse('Activation link is invalid!')   

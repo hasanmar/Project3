@@ -1,6 +1,6 @@
 from django.urls import path
 from . import views
-from .views import reset_password
+from .views import reset_password, activate
 urlpatterns = [
     path("", views.index, name="home"),
     path("accounts/signup", views.signup, name="signup"),
@@ -18,4 +18,13 @@ urlpatterns = [
     path("contribute/",views.ContributeCategoryList.as_view(),name="contribute"),
     path("categories/<int:category_id>/addexercise", views.AddExercise.as_view(), name='add_exercise'),
     path('reset-password/', reset_password, name='reset_password'),
+    
+    
+    
+    
+    
+    
+    path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',  
+        activate, name='activate'),
+    
 ]
