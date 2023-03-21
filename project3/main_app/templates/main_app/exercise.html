@@ -1,10 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
+<section class="container"> 
 <h1>Exercise: {{exercise.first.category}}</h1>
 <div style="display: flex;"><div class="progress">
     <div class="determinate" id="progress-bar" style="width: 0"></div> 
-</div><div id="q-id">1/5</div></div>
+</div><div id="q-id">1/{{ exercise|length }}</div></div>
 <form action="" method="post">
     {% csrf_token %}
 {% for i in exercise %}
@@ -51,6 +52,7 @@
     {% endfor %}
 <input type="submit" value="&nbsp; submit &nbsp;" class="btn right hide disabled">
 </form>
+</section>
     <script>
         let counter = 0
         let progress = 0
@@ -62,15 +64,16 @@
         const btnNext = document.querySelectorAll('.next')
         const btnSumbit = document.querySelector('input[type=submit]')
         const qId = document.querySelector('#q-id')
+        const total = ques.length
         ques[counter].classList.remove('hide')
         function nextHandler(e){
             ques[counter].classList.add('hide')
             counter++
-            progress+=20
+            progress+=(100/total)
             progressBar.style.width=`${progress}%`
             qId.innerText=`${counter+1}/5`
 
-            if (counter>3){
+            if (counter>total-2){
                 btnSumbit.classList.remove('hide')
                 btnNext[counter].classList.add('hide')}
                 ques[counter].classList.remove('hide')

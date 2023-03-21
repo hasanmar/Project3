@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Quiz: {{quiz.first.category}}<span id="timer-display" class="right">90</span></h1>
+<section class="container">
+<h1>Quiz: {{quiz.first.category}}<span id="timer-display" class="right">30</span></h1>
 <div style="display: flex;"><div class="progress">
     <div class="determinate" id="progress-bar" style="width: 0"></div> 
 </div><div id="q-id">1/5</div></div>
@@ -45,7 +46,7 @@
             </blockquote>
             </li>
         </ul>
-        <input type="hidden" name="answer{{forloop.counter}}" class="hidden-answer">
+        <input type="hidden" name="answer{{forloop.counter}}" class="hidden-answer" value="">
             <button type="button" class="right next waves-effect waves-light btn disabled">&nbsp; next &nbsp;</button>
         </ul>
     </div>    
@@ -53,9 +54,10 @@
 <input type="hidden" name="answer" id="answer">
 <input type="submit" value="&nbsp; submit &nbsp;" class="btn right hide disabled">
 </form>
+</section>
 <script>
     let counter = 0
-    let timer = 90
+    let timer = 30
     let progress = 0
     const lists = document.querySelectorAll('blockquote')
     const all = document.querySelectorAll('*')
