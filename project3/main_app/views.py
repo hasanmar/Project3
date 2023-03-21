@@ -1,8 +1,7 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth.views import LoginView, PasswordResetView, PasswordResetConfirmView
-from django.contrib.auth.forms import PasswordChangeForm,PasswordResetForm
+from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site  
 from django.core.mail import EmailMessage  
 from django.db.models.functions import Random
@@ -12,15 +11,10 @@ from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from .models import Category, Quiz, Exercise, CustomUser, UserCategory
 from django.views.generic import ListView, DetailView, CreateView
-from django.urls import reverse_lazy
 from django.utils.encoding import force_bytes, force_str  
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode  
 from .forms import UserCreationForm
-from .models import Category, Quiz, Exercise, CustomUser, UserCategory
 from .tokens import account_activation_token   
-from django.core.mail import EmailMessage  
-
-
 
 
 
@@ -301,6 +295,15 @@ def activate(request, uidb64, token):
     
     
 class Profile(DetailView):
-    model = CustomUser
+    model = CustomUser  
     template_name = 'profile.html'
-    
+    slug_field = 'username'
+    slug_url_kwarg = 'username'
+
+    def get_context_data(self, **kwargs):
+        context = super(Profile, self).get_context_data(**kwargs)
+        id = int(self.kwargs.get('pk')) 
+        categories = UserCategory.objects.filter(user_id=id)
+        print('categories', categories)
+        context['userCategories'] = categories
+        return context 

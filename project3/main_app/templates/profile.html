@@ -2,9 +2,15 @@
 
 {% block content %}
 <h1>Welcome, {{ user.username }}!</h1>
-  
-  <h2>Profile Information</h2>
-  <p>username: {{ user.username }}</p>
-  <p>Email: {{ user.email }}</p>
+
+<h2>Profile Information</h2>
+<p>username: {{ user.username }}</p>
+<p>Email: {{ user.email }}</p>
+<p>Overall account level: {{user.level|floatformat:-2}}</p>
+<p>test: {% for u in userCategories %}</p>
+<p>{{forloop.counter}}</p>
+<p>category: {{u.category}} </p>
+<p>level:{{u.level}} </p>
+{% endfor %}
 
 {% endblock %}

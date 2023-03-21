@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 
 from pathlib import Path
 from django.contrib.messages import constants as messages
+import os
+from dotenv import load_dotenv
 
 
 # from decouple import config
@@ -29,6 +31,8 @@ SECRET_KEY = "django-insecure-d+pc6bpur23wkuc2ch#q)%!l=+!hasf#ts%#i&8@4_q%yooz_t
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
+
+load_dotenv()
 
 ALLOWED_HOSTS = []
 
@@ -151,5 +155,5 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
-EMAIL_HOST_USER = 'webdevguruu@gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_ADDY')
 EMAIL_HOST_PASSWORD = 'pswxefceiayefshc'
