@@ -15,6 +15,11 @@ from django.contrib.messages import constants as messages
 import os
 from dotenv import load_dotenv
 
+
+# from decouple import config
+
+
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
