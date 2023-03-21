@@ -18,6 +18,7 @@
             </ul>
         </div>
     </nav>
+    {% if user.is_authenticated %}
     <ul id="dropdown1" class="dropdown-content">
         <li><a href="#">Hi {{user.username}}</a></li>
         <li><a href="#!">Your level: {{user.level|floatformat:-2}}</a></li>
@@ -25,13 +26,15 @@
         <li class="divider"></li>
         <li><a href="{% url 'logout' %}"><i class='bx bx-log-out'></i> logout</a></li>
       </ul>
+      {% endif %}
+
 </header>
 <script>
-    const elems = document.querySelectorAll('.dropdown-trigger');
+    const elemsDropdown = document.querySelectorAll('.dropdown-trigger');
     const options = {
         alignment: 'right',
         coverTrigger: false,
         constrainWidth:false,
       };
-    M.Dropdown.init(elems,options);
+    M.Dropdown.init(elemsDropdown,options);
 </script>

@@ -14,5 +14,8 @@ urlpatterns = [
     path("category/<int:category_id>/exercise", views.take_exercise, name="exercise"),
     path("contribute/",views.ContributeCategoryList.as_view(),name="contribute"),
     path("categories/<int:category_id>/addexercise", views.AddExercise.as_view(), name='add_exercise'),
-    path('account/<int:pk>/profile',views.Profile.as_view(), name='profile'), 
+    path('account/<int:pk>/profile',views.Profile.as_view(), name='profile'),
+    path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',  
+        views.activate, name='activate'),
+ 
 ]
