@@ -19,11 +19,11 @@ urlpatterns = [
     path('reset-password/', reset_password, name='reset_password'),
     
     
-    
+    path('account/<int:pk>/profile',views.Profile.as_view(), name='profile'),
     
     
     
     path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',  
-        activate, name='activate'),
+         activate, name='activate'),
     
 ]
