@@ -24,6 +24,7 @@ from django.core.mail import EmailMessage
 
 
 
+
 def index(request):
     return render(request, "home.html")
 
