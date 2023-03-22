@@ -15,8 +15,7 @@ from django.contrib.messages import constants as messages
 import os
 from dotenv import load_dotenv
 
-
-# from decouple import config
+load_dotenv()
 
 
 

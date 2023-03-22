@@ -5,7 +5,7 @@ from django.contrib.auth.views import LoginView
 from django.contrib.sites.shortcuts import get_current_site  
 from django.core.mail import EmailMessage  
 from django.db.models.functions import Random
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, render
 from django.template.loader import render_to_string  
 from django.urls import reverse_lazy
@@ -287,8 +287,9 @@ def activate(request, uidb64, token):
         user.save()
         messages.success(request, 'Your email has been confirmed. Welcome to our website!')
         return redirect('home')
-    else:  
-        return HttpResponse('Activation link is invalid!')   
+    else:
+         raise Http404("Activation link is invalid!")  
+        # return HttpResponse('Activation link is invalid!')   
     
     
     
