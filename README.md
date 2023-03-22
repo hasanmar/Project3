@@ -61,7 +61,7 @@ quiz = Quiz.objects.filter(category_id=category_id).order_by(Random())[:5]
 
 ## ERD
 
-![ERD](https://i.ibb.co/tCLKZzL/ERD.png)
+![ERD](https://i.imgur.com/Cmms4Bt.png)
 
 ## Installation
 
