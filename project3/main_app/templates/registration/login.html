@@ -7,6 +7,7 @@
 {{form.as_div}}
 <input type="submit" value="Login" class="btn">
 <input type="hidden" name="next" value="{{next}}">
+<a href="{% url 'password_reset' %}" class="large right" style="font-weight: 500;font-size: 1.5rem;">Forgot password?</a>
 </form>
 </section>
 {% endblock  %}
