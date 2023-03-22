@@ -19,6 +19,14 @@ class UserCreationForm(UserCreationForm):
         if commit:
             user.save()
         return user
+
+
+
+## Add Image ##
+# class ImageForm(forms.ModelForm):
+#     class Meta:
+#         model = CustomUser
+#         fields = ['image']
     
     
 class Quizform(forms.ModelForm):

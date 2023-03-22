@@ -32,6 +32,7 @@ DEBUG = False
 
 load_dotenv()
 
+
 ALLOWED_HOSTS = ['*']
 
 # Application definition

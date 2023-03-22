@@ -307,7 +307,23 @@ class Profile(DetailView):
 
 
 
-
-
 def page_not_found(request, exception):
     return render(request, '404.html', status=404)
+
+
+
+
+
+
+## IMAGE POST##
+
+
+# def profile(request):
+#     if request.method == 'POST':
+#         form = ImageForm(request.POST, request.FILES, instance=request.user.profile)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('profile')
+#     else:
+#         form = ImageForm(instance=request.user.profile)
+#     return render(request, 'profile.html', {'form': form})
