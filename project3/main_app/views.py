@@ -18,6 +18,8 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .forms import UserCreationForm
 from .tokens import account_activation_token
+from django.core.paginator import Paginator, EmptyPage
+
 
 
 
@@ -289,20 +291,35 @@ def activate(request, uidb64, token):
         return HttpResponse('Activation link is invalid!')   
     
     
-    
-    
+class MyPaginator(Paginator):
+    def validate_number(self, number):
+        try:
+            return super().validate_number(number)
+        except EmptyPage:
+            if int(number) > 1:
+                # return the last page
+                return self.num_pages
+            elif int(number) < 1:
+                # return the first page
+                return 1
+            else:
+                raise
 
 class Profile(LoginRequiredMixin,DetailView):
     model = CustomUser
     template_name = 'profile.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
+    paginator_class = MyPaginator
 
     def get_context_data(self, **kwargs):
         context = super(Profile, self).get_context_data(**kwargs)
         id = int(self.kwargs.get('pk'))
         categories = UserCategory.objects.filter(user_id=id)
+        page = self.request.GET.get('page', 1)
         print('categories', categories)
+        paginator = self.paginator_class(categories, 4)
+        categories = paginator.page(page)
         context['userCategories'] = categories
         return context
 
