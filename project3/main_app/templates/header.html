@@ -6,7 +6,7 @@
             </ul>
             <ul class="right">
                 <li><a href="/">About</a></li>
-                <li><a href="/">Learn</a></li>
+                <li><a href="{% url 'learn' %}">Learn</a></li>
                 <li><a href="{% url 'categories' %}">Categories</a></li>
                 <li><a href="{% url 'contribute' %}">Contribute</a></li>
                 {% if user.is_authenticated %}
@@ -20,7 +20,7 @@
     </nav>
     {% if user.is_authenticated %}
     <ul id="dropdown1" class="dropdown-content">
-        <li><a href="#">Hi {{user.username}}</a></li>
+        <li><a href="{% url 'profile' user.id %}">Hi {{user.username}}</a></li>
         <li><a href="#!">Your level: {{user.level|floatformat:-2}}</a></li>
         <li><a href="{% url 'password_change' %}">Change Password</a></li>
         <li class="divider"></li>

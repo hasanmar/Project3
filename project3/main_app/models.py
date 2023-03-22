@@ -13,7 +13,7 @@ class Category(models.Model):
                                  blank=True)
 
     def get_absolute_url(self):
-        return reverse("categories", kwargs={"pk": self.id})
+        return reverse("Category_detail", kwargs={"pk": self.id})
 
     def __str__(self):
         return self.name

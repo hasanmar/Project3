@@ -124,9 +124,3 @@ blockquote:hover {
     background-size: cover;
     height: 100vh;
 }
-
-.category-img {
-    background: url('../images/assets/webdeveloper_1.jpg');
-    background-size: cover;
-    height: 50vh;
-}
