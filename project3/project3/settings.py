@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from django.contrib.messages import constants as messages
 import os
-from dotenv import load_dotenv
+# from dotenv import load_dotenv
 
 
 # from decouple import config
@@ -32,7 +32,7 @@ SECRET_KEY = "django-insecure-d+pc6bpur23wkuc2ch#q)%!l=+!hasf#ts%#i&8@4_q%yooz_t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-load_dotenv()
+# load_dotenv()
 
 ALLOWED_HOSTS = []
 
@@ -87,7 +87,7 @@ DATABASES = {
         # Remote Settings
         "NAME": "anas029/webDevGuru",
         "USER": "anas029",
-        "PASSWORD": os.getenv('DBPASS_'),
+        "PASSWORD": 'v2_42NnR_wRcKHDXuznpF4chh7nwU9x4',
         'HOST': 'db.bit.io',
         'PORT': '5432',
 

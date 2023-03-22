@@ -229,6 +229,7 @@ class AddQuiz(LoginRequiredMixin,CreateView):
         return super().form_invalid(form)
 
     def form_valid(self, form):
+        print(self.request.user)
         form.instance.category_id = self.kwargs['category_id']
         form.instance.user = self.request.user
         messages.success(self.request, 'Quiz submitted!')
