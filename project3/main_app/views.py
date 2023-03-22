@@ -2,11 +2,13 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
 from django.db.models.functions import Random
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import redirect, render
+from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from .models import Category, Quiz, Exercise, CustomUser, UserCategory
@@ -35,6 +37,7 @@ class CategoryList(ListView):
 ################################################
 ##                    Quiz                   ##
 ################################################
+@login_required
 def take_quiz(request, category_id):
     if request.method == 'GET':
         quiz = Quiz.objects.filter(category_id=category_id,
@@ -125,6 +128,7 @@ def take_quiz(request, category_id):
 ################################################
 ##                  Exercise                 ##
 ################################################
+@login_required
 def take_exercise(request, category_id):
     if request.method == 'GET':
         exercise = Exercise.objects.filter(category_id=category_id,
@@ -258,7 +262,7 @@ class AddExercise(LoginRequiredMixin,CreateView):
 ################################################
 ##                 contribute                 ##
 ################################################
-class ContributeCategoryList(ListView):
+class ContributeCategoryList(LoginRequiredMixin,ListView):
     model = Category
     template_name = "main_app/contribute.html"
 
@@ -282,11 +286,12 @@ def activate(request, uidb64, token):
             request, 'Your email has been confirmed. Welcome to our website!')
         return redirect('home')
     else:
-        return HttpResponse('Activation link is invalid!')
+        return HttpResponse('Activation link is invalid!')   
+    
+    
+    
+    
 
-################################################
-##                 Profile                    ##
-################################################
 class Profile(LoginRequiredMixin,DetailView):
     model = CustomUser
     template_name = 'profile.html'
@@ -300,3 +305,28 @@ class Profile(LoginRequiredMixin,DetailView):
         print('categories', categories)
         context['userCategories'] = categories
         return context
+
+
+
+
+
+def page_not_found(request, exception):
+    return render(request, '404.html', status=404)
+
+
+
+
+
+
+## IMAGE POST##
+
+
+# def profile(request):
+#     if request.method == 'POST':
+#         form = ImageForm(request.POST, request.FILES, instance=request.user.profile)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('profile')
+#     else:
+#         form = ImageForm(instance=request.user.profile)
+#     return render(request, 'profile.html', {'form': form})

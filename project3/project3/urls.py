@@ -26,3 +26,5 @@ urlpatterns = [
     #  path('activate/(?P<uidb64>[0-9A-Za-z_\-]+)/(?P<token>[0-9A-Za-z]{1,13}-[0-9A-Za-z]{1,20})/',  
         # activate, name='activate'),
 ]
+
+handler404 = 'main_app.views.page_not_found'

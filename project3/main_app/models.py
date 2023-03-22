@@ -23,7 +23,7 @@ class Category(models.Model):
 class CustomUser(AbstractUser, models.Model):
     email = models.EmailField(max_length=255, blank=False, default='')
     level = models.FloatField(default=0)
-    # imagePath = models.ImageField()
+    # image = models.ImageField(upload_to='images/profile_images', blank=True)
 
     def __str__(self):
         return self.username
