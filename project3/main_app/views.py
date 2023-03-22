@@ -311,16 +311,18 @@ class Profile(LoginRequiredMixin,DetailView):
 class LeaderboardView(ListView):
     model = CustomUser
     fields = '__all__'
-    class Meta:
-        ordering = ['-level']
+    ordering = ["-level"] 
         
     def get_context_data(self, **kwargs):
         context = super(LeaderboardView, self).get_context_data(**kwargs)
         cats =[]
+        categories = Category.objects.all()
         for i in range(1,11):
-            cats.append(UserCategory.objects.filter(category_id = i).order_by('-level')[:5])
-        print(cats) 
+            cats.append(UserCategory.objects.filter(category_id = i).order_by('-level')[:5]) 
+        print(cats)
         context['userCategories'] = cats 
+        context['categories'] = categories 
+        context['loop_times'] = range(0,5)
         return context
 
 
