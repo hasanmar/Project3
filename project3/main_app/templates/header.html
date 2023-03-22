@@ -8,6 +8,7 @@
                 <li><a href="/">About</a></li>
                 <li><a href="{% url 'learn' %}">Learn</a></li>
                 <li><a href="{% url 'categories' %}">Categories</a></li>
+                <li><a href="{% url 'leaderboards' %}">Leaderboards</a></li>
                 <li><a href="{% url 'contribute' %}">Contribute</a></li>
                 {% if user.is_authenticated %}
                 <li><a class="dropdown-trigger" href="#!" data-target="dropdown1"><i class="material-icons">account_circle</i></a>&nbsp;</li>

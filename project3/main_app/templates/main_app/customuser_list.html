@@ -5,13 +5,13 @@
 <table>
     <tr>
         <th>
-            position
+            Position
         </th>
         <th>
-            username
+            Username
         </th>
         <th>
-            level
+            Level
         </th>
     </tr>
     {%for i in object_list %}
@@ -26,25 +26,25 @@
 <h3>Top 5 by category:</h3>
 <hr><br>
 {% for u in userCategories %}
-<h4>category: {{u.0.category}}</h4>
+<h4>Category: {{u.0.category}}</h4>
 <table>
     <tr>
         <th>
-            position
+            Position
         </th>
         <th>
-            username
+            Username
         </th>
         <th>
-            level
+            Level
         </th>
         <th>
-            attempts
+            Attempts
         </th>
     </tr>
     <tr>
         <td>
-            <p>{{1}}</p>
+            <p>1</p>
         </td>
         <td>
             <p>{{u.0.user}}</p>
@@ -58,7 +58,7 @@
     </tr>
     <tr>
         <td>
-            <p>{{2}}</p>
+            <p>2</p>
         </td>
         <td>
             <p>{{u.1.user}}</p>
@@ -72,7 +72,7 @@
     </tr>
     <tr>
         <td>
-            <p>{{3}}</p>
+            <p>3</p>
         </td>
         <td>
             <p>{{u.2.user}}</p>
@@ -86,7 +86,7 @@
     </tr>
     <tr>
         <td>
-            <p>{{4}}</p>
+            <p>4</p>
         </td>
         <td>
             <p>{{u.3.user}}</p>
@@ -100,7 +100,7 @@
     </tr>
     <tr>
         <td>
-            <p>{{5}}</p>
+            <p>5</p>
         </td>
         <td>
             <p>{{u.4.user}}</p>
