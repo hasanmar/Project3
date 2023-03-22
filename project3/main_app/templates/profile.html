@@ -1,16 +1,146 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<h1>Welcome, {{ user.username }}!</h1>
 
-<h2>Profile Information</h2>
-<p>username: {{ user.username }}</p>
-<p>Email: {{ user.email }}</p>
-<p>Overall account level: {{user.level|floatformat:-2}}</p>
-<p>test: {% for u in userCategories %}</p>
-<p>{{forloop.counter}}</p>
-<p>category: {{u.category}} </p>
-<p>level:{{u.level}} </p>
-{% endfor %}
+<style>
+
+h1 {
+	font-size: 23px;
+}
+
+h2 {
+	font-size: 17px;
+}
+
+p {
+	font-size: 15px;
+}
+
+
+
+h1, h2, p, a, span{
+	color: black;
+}
+
+.titular {
+	display: block;
+	line-height: 60px;
+	margin: 0;
+	text-align: center;
+	border-top-left-radius: 5px;
+	border-top-right-radius: 5px;
+}
+
+
+.profile-picture {
+	border-radius: 100%;
+	overflow: hidden;
+	-webkit-box-sizing: content-box;
+  	-moz-box-sizing: content-box;
+  	box-sizing: content-box;	
+      margin: 0 auto;		
+      border: 5px solid #50597b;
+      width: 150px;
+      height: 150px;
+}
+section.container{
+    display: flex;
+    justify-content: center;
+    padding-top: 100px;
+}
+	.widget {
+		width: 300px;
+	}
+		.block {
+			margin-bottom: 25px;
+			background: #e0e0e0   ;
+			border-radius: 5px;
+		}
+			.menu-box {
+				height: 360px;
+				
+			}
+				.menu-box .titular {
+					background: #11a8ab;
+				}
+				.menu-box-number {
+					width: 36px;
+					line-height: 22px;
+					background: #11a8ab;
+					text-align: center;
+					border-radius: 15px;
+					position: absolute;
+					top: 15px;
+					right: 15px;
+					-webkit-transition: all .3s;
+					transition: all .3s;
+				}
+				.menu-box-menu li{
+					height: 60px;
+					position: relative;										
+				}
+				.menu-box-tab {
+					line-height: 60px;
+					display: block;
+					border-bottom: 1px solid #1f253d;
+					-webkit-transition: background .2s;
+					transition: background .2s;
+					cursor: unset;
+				}
+					.menu-box-tab:hover {
+						background: #11a8ab;
+						border-top: 1px solid #1f253d;
+						text-decoration: none;
+					}
+					.menu-box-tab:hover .menu-box-number {
+						background: rgb(189, 229, 11);
+					}
+
+		.right-container {
+			margin: 0 25px;			
+		}
+			.profile {
+				min-height: 360px;
+			}
+				.user-name {
+					margin: 25px 0 16px;
+					text-align: center;
+				}
+				.profile-description {
+					width: 210px;
+					margin: 0 auto;
+					text-align: center;
+				}
+</style>
+<section class="container">
+
+        <div class="right-container widget">
+            <div class="profile block">
+                <div>&nbsp;</div>
+                <div class="profile-picture clear">
+                    <img width="150px" alt="{{user.username}}'s' profile picture" src="https://pbs.twimg.com/media/FjU2lkcWYAgNG6d.jpg" >
+                </div>
+                <h1 class="user-name">{{ user.username }}</h1>
+                <div class="profile-description">
+                    <p class="scnd-font-color">Email: {{ user.email }}</p>
+                    <p class="scnd-font-color">Overall level: {{user.level|floatformat:-2}}</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="widget">
+            <div class="menu-box block">
+                <h2 class="titular">Level per category</h2>
+                <ul class="menu-box-menu">
+                    {% for u in userCategories %}
+                    <li>
+                        <a class="menu-box-tab" href="#">&nbsp;&nbsp;&nbsp;{{u.category}}<div class="menu-box-number">{{u.level}}</div></a>                            
+                    </li>
+                    {% endfor %}           
+                </ul>
+            </div>
+        </div>
+        </section>
+		<div style="height: 20vh;"></div>
 
 {% endblock %}
