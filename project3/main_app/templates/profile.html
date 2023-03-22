@@ -153,7 +153,7 @@
 				{% for u in userCategories %}
 				<li>
 					<a class="menu-box-tab" href="#">&nbsp;&nbsp;&nbsp;{{u.category}}<div class="menu-box-number">
-							{{u.level}}</div></a>
+							{{u.level|floatformat:-2}}</div></a>
 				</li>
 				{% endfor %}
 			</ul>
