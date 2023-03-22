@@ -84,11 +84,18 @@ WSGI_APPLICATION = "project3.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "anas029/project3",
+        # Remote Settings
+        "NAME": "anas029/webDevGuru",
         "USER": "anas029",
         "PASSWORD": os.getenv('DBPASS_'),
         'HOST': 'db.bit.io',
         'PORT': '5432',
+
+        # Local Settings
+        # "NAME": "project",
+        # "USER": "postgres",
+        # "PASSWORD": 'admin',
+        # 'PORT': '4000',
     }
 }
 

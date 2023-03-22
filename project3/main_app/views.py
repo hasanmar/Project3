@@ -218,7 +218,7 @@ class CustomLoginView(LoginView):
 ################################################
 ##                  Add Quiz                  ##
 ################################################
-class AddQuiz(CreateView):
+class AddQuiz(LoginRequiredMixin,CreateView):
     model = Quiz
     fields = [
         'qustion', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
@@ -238,7 +238,7 @@ class AddQuiz(CreateView):
 ################################################
 ##              Add Exercises                 ##
 ################################################
-class AddExercise(CreateView):
+class AddExercise(LoginRequiredMixin,CreateView):
     model = Exercise
     fields = [
         'question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
@@ -287,7 +287,7 @@ def activate(request, uidb64, token):
 ################################################
 ##                 Profile                    ##
 ################################################
-class Profile(DetailView):
+class Profile(LoginRequiredMixin,DetailView):
     model = CustomUser
     template_name = 'profile.html'
     slug_field = 'username'
