@@ -308,10 +308,20 @@ class Profile(LoginRequiredMixin,DetailView):
 
 
 
-
-
-def page_not_found(request, exception):
-    return render(request, '404.html', status=404)
+class LeaderboardView(ListView):
+    model = CustomUser
+    fields = '__all__'
+    class Meta:
+        ordering = ['-level']
+        
+    def get_context_data(self, **kwargs):
+        context = super(LeaderboardView, self).get_context_data(**kwargs)
+        cats =[]
+        for i in range(1,11):
+            cats.append(UserCategory.objects.filter(category_id = i).order_by('-level')[:5])
+        print(cats) 
+        context['userCategories'] = cats 
+        return context
 
 
 

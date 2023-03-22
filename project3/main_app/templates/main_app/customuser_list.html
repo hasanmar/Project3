@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{%for i in object_list %}
+<p>username: {{i.username}}</p>
+<p>level: {{i.level}}</p>
+<p>{{i.category}}</p>
+{% endfor%}
+
+{% for u in userCategories %}
+<p>{{u.0.category}}</p>
+<p>{{u.0.user}}</p>
+<p>{{u.0.level}}</p>
+<hr>
+{% endfor %}
+
+{% endblock %}
