@@ -13,7 +13,7 @@ https://docs.djangoproject.com/en/4.1/ref/settings/
 from pathlib import Path
 from django.contrib.messages import constants as messages
 import os
-# from dotenv import load_dotenv
+from dotenv import load_dotenv
 
 
 # from decouple import config
@@ -32,7 +32,7 @@ SECRET_KEY = "django-insecure-d+pc6bpur23wkuc2ch#q)%!l=+!hasf#ts%#i&8@4_q%yooz_t
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-# load_dotenv()
+load_dotenv()
 
 ALLOWED_HOSTS = []
 
@@ -84,11 +84,18 @@ WSGI_APPLICATION = "project3.wsgi.application"
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
-        "NAME": "anas029/project3",
+        # Remote Settings
+        "NAME": "anas029/webDevGuru",
         "USER": "anas029",
-        "PASSWORD": "v2_42BZE_4zuZeKEpbyUcBuhC3ch8WJe",
+        "PASSWORD": os.getenv('DBPASS_'),
         'HOST': 'db.bit.io',
         'PORT': '5432',
+
+        # Local Settings
+        # "NAME": "project",
+        # "USER": "postgres",
+        # "PASSWORD": 'admin',
+        # 'PORT': '4000',
     }
 }
 
@@ -156,4 +163,4 @@ EMAIL_USE_TLS = True
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.getenv('EMAIL_ADDY')
-EMAIL_HOST_PASSWORD = os.getenv('EMAIL_PASS')
+EMAIL_HOST_PASSWORD = os.getenv('ADDY_PASS')

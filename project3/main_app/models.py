@@ -2,7 +2,7 @@ from django.conf import settings
 from django.db import models
 from django.urls import reverse
 from django.contrib.auth.models import AbstractUser
-from django.contrib.auth.models import User
+from django.contrib import admin
 
 
 class Category(models.Model):
@@ -23,6 +23,7 @@ class Category(models.Model):
 class CustomUser(AbstractUser, models.Model):
     email = models.EmailField(max_length=255, blank=False, default='')
     level = models.FloatField(default=0)
+    # imagePath = models.ImageField()
 
     def __str__(self):
         return self.username
@@ -44,6 +45,7 @@ class Exercise(models.Model):
     correctAnswer = models.CharField(max_length=150)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     isApproved = models.BooleanField(default=False)
+    user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
 
     def get_absolute_url(self):
         return reverse("contribute")
@@ -58,6 +60,8 @@ class Quiz(models.Model):
     correctAnswer = models.CharField(max_length=150)
     category = models.ForeignKey(Category, on_delete=models.CASCADE)
     isApproved = models.BooleanField(default=False)
+    user = models.ForeignKey(CustomUser, on_delete=models.DO_NOTHING)
+
 
     def get_absolute_url(self):
         return reverse("contribute")

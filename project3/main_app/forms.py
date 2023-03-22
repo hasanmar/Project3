@@ -1,7 +1,7 @@
 from django.contrib.auth.forms import UserCreationForm
 from django import forms
-from .models import CustomUser, Quiz, User
-from .models import CustomUser, Exercise, User
+from .models import CustomUser, Quiz
+from .models import CustomUser, Exercise
 from django.contrib.auth.views import PasswordResetView, PasswordResetConfirmView,PasswordResetForm ,SetPasswordForm
 
 
