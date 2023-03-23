@@ -16,8 +16,6 @@ import os
 # from dotenv import load_dotenv
 
 
-# from decouple import config
-
 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -34,7 +32,9 @@ DEBUG = True
 
 # load_dotenv()
 
-ALLOWED_HOSTS = []
+
+ALLOWED_HOSTS = ['*']
+STATIC_ROOT = 'main_app/static/'
 
 # Application definition
 

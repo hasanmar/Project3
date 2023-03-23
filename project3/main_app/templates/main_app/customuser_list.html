@@ -1,0 +1,53 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% comment %} {%for i in object_list %}
+<p>username: {{i.username}}</p>
+<p>level: {{i.level}}</p>
+<p>{{i.category}}</p>
+{% endfor%} {% endcomment %}
+
+{% comment %} {% for u in userCategories %}
+<p>{{u.0.category}}</p>
+<p>{{u.0.user}}</p>
+<p>{{u.0.level}}</p>
+<hr>
+{% endfor %} {% endcomment %}
+<div style="height: 10vh;"></div>
+
+<section class="container">
+<style>
+    table{
+        font: 500;
+    }
+    thead{
+        font-size: 2rem;
+        color: ;
+    }
+    tbody{
+        font-size: 1.5rem !important;
+    }
+</style>
+<table class="striped responsive-table highlight">
+    <thead class="deep-purple-text">
+        <tr>
+            <th>Category</th>
+            <th>Username</th>
+            <th>Level</th>
+        </tr>
+    </thead>
+    
+    <tbody>
+        {% for u in userCategories %}
+        <tr>
+            <td>{{u.0.category}}</td>
+            <td>  <i class="material-icons green-text darken-1">navigation</i> &nbsp;<strong>{{u.0.user}}</strong></td>
+            <td>{{u.0.level|floatformat:-2}}</td>
+        </tr>
+            {% endfor %}
+    </tbody>
+</table>
+</section>
+<div style="height: 10vh;"></div>
+
+{% endblock %}

@@ -2,22 +2,23 @@ from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.views import LoginView
+from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models.functions import Random
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import redirect, render
+from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from .models import Category, Quiz, Exercise, CustomUser, UserCategory
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DetailView
 from django.views.generic.edit import UpdateView
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .forms import UserCreationForm
 from .tokens import account_activation_token
-
-
 
 
 def index(request):
@@ -35,6 +36,7 @@ class CategoryList(ListView):
 ################################################
 ##                    Quiz                   ##
 ################################################
+@login_required
 def take_quiz(request, category_id):
     if request.method == 'GET':
         quiz = Quiz.objects.filter(category_id=category_id,
@@ -125,6 +127,7 @@ def take_quiz(request, category_id):
 ################################################
 ##                  Exercise                 ##
 ################################################
+@login_required
 def take_exercise(request, category_id):
     if request.method == 'GET':
         exercise = Exercise.objects.filter(category_id=category_id,
@@ -218,7 +221,7 @@ class CustomLoginView(LoginView):
 ################################################
 ##                  Add Quiz                  ##
 ################################################
-class AddQuiz(LoginRequiredMixin,CreateView):
+class AddQuiz(LoginRequiredMixin, CreateView):
     model = Quiz
     fields = [
         'qustion', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
@@ -239,7 +242,7 @@ class AddQuiz(LoginRequiredMixin,CreateView):
 ################################################
 ##              Add Exercises                 ##
 ################################################
-class AddExercise(LoginRequiredMixin,CreateView):
+class AddExercise(LoginRequiredMixin, CreateView):
     model = Exercise
     fields = [
         'question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
@@ -259,7 +262,7 @@ class AddExercise(LoginRequiredMixin,CreateView):
 ################################################
 ##                 contribute                 ##
 ################################################
-class ContributeCategoryList(ListView):
+class ContributeCategoryList(LoginRequiredMixin, ListView):
     model = Category
     template_name = "main_app/contribute.html"
 
@@ -285,19 +288,153 @@ def activate(request, uidb64, token):
     else:
         return HttpResponse('Activation link is invalid!')
 
+
 ################################################
-##                 Profile                    ##
+##                 Profile Page               ##
 ################################################
-class Profile(LoginRequiredMixin,DetailView):
+
+
+class Profile(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = 'profile.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
 
     def get_context_data(self, **kwargs):
+        PAGES_NUM = 5
         context = super(Profile, self).get_context_data(**kwargs)
         id = int(self.kwargs.get('pk'))
         categories = UserCategory.objects.filter(user_id=id)
-        print('categories', categories)
+        quiz = Quiz.objects.filter(user_id=id)
+        exercise = Exercise.objects.filter(user_id=id)
+
+        paginator1 = Paginator(quiz, PAGES_NUM)
+        paginator2 = Paginator(exercise, PAGES_NUM)
+
+        page1 = self.request.GET.get('page1')
+        try:
+            quiz_obj = paginator1.get_page(page1)
+        except PageNotAnInteger:
+            quiz_obj = paginator1.get_page(1)
+        except EmptyPage:
+            quiz_obj = paginator1.get_page(paginator1.num_pages)
+
+        page2 = self.request.GET.get('page2')
+        try:
+            exercise_obj = paginator2.get_page(page2)
+        except PageNotAnInteger:
+            exercise_obj = paginator2.get_page(1)
+        except EmptyPage:
+            exercise_obj = paginator2.get_page(paginator2.num_pages)
+
         context['userCategories'] = categories
+        context['quiz'] = quiz_obj
+        context['exercise'] = exercise_obj
+
         return context
+
+
+################################################
+##                  Edit Quiz                  ##
+################################################
+class UpdateQuiz(LoginRequiredMixin, UpdateView):
+    model = Quiz
+    fields = [
+        'qustion', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
+    ]
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.object.user_id})
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid form entries')
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.isApproved = False
+        messages.success(self.request, 'Quiz Updated!')
+        return super().form_valid(form)
+
+
+################################################
+##               Delete Quiz                  ##
+################################################
+class DeleteQuiz(LoginRequiredMixin, DetailView):
+    model = Quiz
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.object.user_id})
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+################################################
+##              Update Exercise               ##
+################################################
+class UpdateExercise(LoginRequiredMixin, UpdateView):
+    model = Exercise
+    fields = [
+        'question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
+    ]
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.object.user_id})
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid form entries')
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.isApproved = False
+        messages.success(self.request, 'Exercise Updated!')
+        return super().form_valid(form)
+
+
+################################################
+##               Delete Exercise              ##
+################################################
+class DeleteExercise(LoginRequiredMixin, DetailView):
+    model = Exercise
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.object.user_id})
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+class LeaderboardView(ListView):
+    model = CustomUser
+    fields = '__all__'
+
+    class Meta:
+        ordering = ['-level']
+
+    def get_context_data(self, **kwargs):
+        context = super(LeaderboardView, self).get_context_data(**kwargs)
+        cats = []
+        for i in range(1, 11):
+            cats.append(
+                UserCategory.objects.filter(
+                    category_id=i).order_by('-level')[:5])
+        print(cats)
+        context['userCategories'] = cats
+        return context
+
+
+## IMAGE POST##
+
+# def profile(request):
+#     if request.method == 'POST':
+#         form = ImageForm(request.POST, request.FILES, instance=request.user.profile)
+#         if form.is_valid():
+#             form.save()
+#             return redirect('profile')
+#     else:
+#         form = ImageForm(instance=request.user.profile)
+#     return render(request, 'profile.html', {'form': form})

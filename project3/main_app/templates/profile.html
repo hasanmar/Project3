@@ -3,7 +3,15 @@
 {% block content %}
 
 <style>
-
+	section{
+		margin-top: 10vh;
+		display: flex;
+		flex-wrap:wrap;
+		justify-content: space-around;
+	}
+	.one{
+		width: 40%;
+	}
 h1 {
 	font-size: 23px;
 }
@@ -43,23 +51,14 @@ h1, h2, p, a, span{
       width: 150px;
       height: 150px;
 }
-section.container{
-    display: flex;
-    justify-content: center;
-    padding-top: 100px;
-}
-	.widget {
-		width: 300px;
-	}
 		.block {
+			display: block;
 			margin-bottom: 25px;
 			background: #e0e0e0;
 			border-radius: 5px;
+			height: fit-content;
+			min-height: 460px;
 		}
-			.menu-box {
-				height: 360px;
-				
-			}
 				.menu-box .titular {
 					background: #11a8ab;
 				}
@@ -69,15 +68,14 @@ section.container{
 					background: #11a8ab;
 					text-align: center;
 					border-radius: 15px;
-					position: absolute;
+					position: relative;
 					top: 15px;
 					right: 15px;
 					-webkit-transition: all .3s;
 					transition: all .3s;
 				}
 				.menu-box-menu li{
-					height: 60px;
-					position: relative;										
+					min-height: 60px;
 				}
 				.menu-box-menu{
 			background: #e0e0e0;
@@ -86,26 +84,44 @@ section.container{
 				.menu-box-tab {
 					line-height: 60px;
 					display: block;
-					border-bottom: 1px solid #1f253d;
 					-webkit-transition: background .2s;
 					transition: background .2s;
 					cursor: unset;
 				}
-					.menu-box-tab:hover {
+				.new li{
+					display: flex;
+					align-items: center;
+					padding-left: 20px;
+					padding-right: 10px;
+					border-bottom: 1px solid #1f253d;
+					-webkit-transition: background .2s;
+					transition: background .2s;
+					min-height: 100px;
+				}
+				.new-tab{
+					cursor: pointer;
+					line-height: 1.6;
+					display: block;
+				}
+				.menu-box-tab:hover {
 						background: #11a8ab;
 						border-top: 1px solid #1f253d;
 						text-decoration: none;
 					}
-					.menu-box-tab:hover .menu-box-number {
+				.menu-box-tab:hover, .new li:hover {
+						background: #b2dfdb;
+					}
+				.menu-box-tab:hover .menu-box-number {
 						background: rgb(189, 229, 11);
 					}
+					.new li:last-child{
+						background-color: #e0e0e0;
+						display: flex;
+						align-items: center;
+						justify-content: space-around;
+						font-size: larger;
+					}
 
-		.right-container {
-			margin: 0 25px;			
-		}
-			.profile {
-				min-height: 360px;
-			}
 				.user-name {
 					margin: 25px 0 16px;
 					text-align: center;
@@ -115,10 +131,14 @@ section.container{
 					margin: 0 auto;
 					text-align: center;
 				}
+				.teal-text:hover{
+					font-size: 30px;
+					color: #d32f2f !important;
+				}
 </style>
+<div style="height: 10vh;"></div>
 <section class="container">
-
-        <div class="right-container widget">
+	<div class="one">
             <div class="profile block">
                 <div>&nbsp;</div>
                 <div class="profile-picture clear">
@@ -130,21 +150,110 @@ section.container{
                     <p class="scnd-font-color">Overall level: {{user.level|floatformat:-2}}</p>
                 </div>
             </div>
-        </div>
-
-        <div class="widget">
-            <div class="menu-box block">
+			{% if userCategories %}
+            <div class="menu-box block ">
                 <h2 class="titular">Level per category</h2>
                 <ul class="menu-box-menu">
                     {% for u in userCategories %}
                     <li>
-                        <a class="menu-box-tab" href="#">&nbsp;&nbsp;&nbsp;{{u.category}}<div class="menu-box-number">{{u.level}}</div></a>                            
+                        <a class="menu-box-tab" href="#">&nbsp;&nbsp;&nbsp;{{u.category}}<div class="menu-box-number right">{{u.level|floatformat:-2}}</div></a>                            
                     </li>
                     {% endfor %}           
                 </ul>
             </div>
-        </div>
+			{% endif %}
+		</div>
+	<div class="one">
+			{% if exercise %}
+				<div class="menu-box block ">
+					<h2 class="titular">Exercise</h2>
+					<ul class="menu-box-menu new">
+						{% for q in exercise %}
+						<li>
+							<a class="new-tab" href="{% url 'update_exercise' q.id %}" style="width: 100%;"><p>
+								{% if q.isApproved %}
+								<i class="material-icons green-text" >check_circle</i> &nbsp;
+								{% else %}
+								<i class="material-icons orange-text">timelapse</i> &nbsp;
+								{% endif %} 
+								{{q.question}}</p></a>                            
+						</li>
+						{% endfor %}
+						{% if exercise.has_other_pages %}
+						<li>
+							
+							{% if exercise.has_previous %}
+							<span class="waves-effect"><a href="?page2=1"><i class="material-icons teal-text">first_page</i></a></span>
+							<span class="waves-effect"><a href="?page2={{ page_obj.previous_page_number }}"><i class="material-icons teal-text">chevron_left</i></a></span>
+							{% else %}
+							<span class="disabled"><a href="#"><i class="material-icons">chevron_left</i></a></span>
+							{% endif %}
+	
+							{% for num in exercise.paginator.page_range %}
+								{% if exercise.number == num %}
+									<span class="active"><a href="#!">{{ num }}</a></span>
+								{% elif num > exercise.number|add:'-3' and num < exercise.number|add:'3' %}
+									<spam class="waves-effect"><a href="?page2={{ num }}" class="teal-text">{{ num }}</a></spam>
+								{% endif %}
+							{% endfor %}
+	
+							{% if exercise.has_next %}
+								<span class="waves-effect"><a href="?page2={{ exercise.next_page_number }}"><i class="material-icons teal-text">chevron_right</i></a></span>
+								<span class="waves-effect"><a href="?page2={{ exercise.paginator.num_pages }}"><i class="material-icons teal-text">last_page</i></a></span>
+							{% else %}
+								<span class="disabled"><a href="#"><i class="material-icons">chevron_right</i></a></span>
+							{% endif %}
+						</li>
+						{% endif %}           
+					</ul>
+				</div>
+	{% endif %}
+		{% if quiz %}
+            <div class="menu-box block ">
+                <h2 class="titular">Quizzes</h2>
+                <ul class="menu-box-menu new">
+                    {% for q in quiz %}
+                    <li>
+                        <a class="new-tab" href="{% url 'update_quiz' q.id %}" style="width: 100%;"><p>
+							{% if q.isApproved %}
+							<i class="material-icons green-text" >check_circle</i> &nbsp;
+							{% else %}
+							<i class="material-icons orange-text">timelapse</i> &nbsp;
+							{% endif %} 
+							{{q.qustion}}
+					</p></a>                          
+                    </li>
+                    {% endfor %}
+					{% if quiz.has_other_pages %}
+					<li>
+						
+						{% if quiz.has_previous %}
+						<span class="waves-effect"><a href="?page1=1"><i class="material-icons teal-text">first_page</i></a></span>
+						<span class="waves-effect"><a href="?page1={{ page_obj.previous_page_number }}"><i class="material-icons teal-text">chevron_left</i></a></span>
+						{% else %}
+						<span class="disabled"><a href="#"><i class="material-icons">chevron_left</i></a></span>
+						{% endif %}
+
+						{% for num in quiz.paginator.page_range %}
+							{% if quiz.number == num %}
+								<span class="active"><a href="#!">{{ num }}</a></span>
+							{% elif num > quiz.number|add:'-3' and num < quiz.number|add:'3' %}
+								<spam class="waves-effect"><a href="?page1={{ num }}" class="teal-text">{{ num }}</a></spam>
+							{% endif %}
+						{% endfor %}
+
+						{% if quiz.has_next %}
+							<span class="waves-effect"><a href="?page1={{ quiz.next_page_number }}"><i class="material-icons teal-text">chevron_right</i></a></span>
+							<span class="waves-effect"><a href="?page1={{ quiz.paginator.num_pages }}"><i class="material-icons teal-text">last_page</i></a></span>
+						{% else %}
+							<span class="disabled"><a href="#"><i class="material-icons">chevron_right</i></a></span>
+						{% endif %}
+					</li>
+					{% endif %}           
+                </ul>
+            </div>
+{% endif %}
+</div>
         </section>
 		<div style="height: 20vh;"></div>
-
-{% endblock %}
+	 {% endblock %}

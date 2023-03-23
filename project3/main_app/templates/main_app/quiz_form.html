@@ -6,9 +6,13 @@
         background-color: #ede7f6 ;
     }
 </style>
-<div style="height: 20vh;"></div>
+<div style="height: 30px;"></div>
 <section class="container">
+{% if object %}
+<h1>Update Quiz</h1>
+{% else %}
 <h1>Add Quiz</h1>
+{% endif %}
 
 <form method="post">{% csrf_token %}
     {{ form.as_p }}
@@ -17,7 +21,14 @@
         <button class='btn deep-purple darken-2 select-answer' type="button">Option2</button>
         <button class='btn deep-purple darken-2 select-answer' type="button">Option3</button>
         <button class='btn deep-purple darken-2 select-answer' type="button">Option4</button>
+        {% if object %}
+        <span class="right">
+        <input type="submit" value="Update" class="btn blue" id="submit"> &nbsp;&nbsp;
+        <a href="{% url 'delete_quiz' object.id %}" class="btn red">Delete</a> 
+    </span>
+        {% else %}
         <input type="submit" value="Sumbit" class="btn right red" id="submit">
+        {% endif %}
     </div>
    
 </form>

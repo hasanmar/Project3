@@ -109,8 +109,9 @@ function countTime(){
             timerText.innerHTML = "Time's up"
             form.submit()
             ques.forEach(que=>{
-                //que.classList.add('hide')
                 btnSumbit.classList.add('hide')})
+            btnNext.forEach(btn=>{
+                btn.classList.add('hide')})
         }
 }
 
