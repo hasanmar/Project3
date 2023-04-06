@@ -19,6 +19,8 @@ from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .forms import UserCreationForm
 from .tokens import account_activation_token
+from django.core.paginator import Paginator, EmptyPage
+
 
 
 def index(request):
@@ -286,7 +288,26 @@ def activate(request, uidb64, token):
             request, 'Your email has been confirmed. Welcome to our website!')
         return redirect('home')
     else:
+<<<<<<< HEAD
         return HttpResponse('Activation link is invalid!')
+=======
+        return HttpResponse('Activation link is invalid!')   
+    
+    
+class MyPaginator(Paginator):
+    def validate_number(self, number):
+        try:
+            return super().validate_number(number)
+        except EmptyPage:
+            if int(number) > 1:
+                # return the last page
+                return self.num_pages
+            elif int(number) < 1:
+                # return the first page
+                return 1
+            else:
+                raise
+>>>>>>> 987a2fce37277d948fa4683c7b70925f7e8cb4c2
 
 
 ################################################
@@ -299,12 +320,14 @@ class Profile(LoginRequiredMixin, DetailView):
     template_name = 'profile.html'
     slug_field = 'username'
     slug_url_kwarg = 'username'
+    paginator_class = MyPaginator
 
     def get_context_data(self, **kwargs):
         PAGES_NUM = 5
         context = super(Profile, self).get_context_data(**kwargs)
         id = int(self.kwargs.get('pk'))
         categories = UserCategory.objects.filter(user_id=id)
+<<<<<<< HEAD
         quiz = Quiz.objects.filter(user_id=id)
         exercise = Exercise.objects.filter(user_id=id)
 
@@ -327,6 +350,12 @@ class Profile(LoginRequiredMixin, DetailView):
         except EmptyPage:
             exercise_obj = paginator2.get_page(paginator2.num_pages)
 
+=======
+        page = self.request.GET.get('page', 1)
+        print('categories', categories)
+        paginator = self.paginator_class(categories, 4)
+        categories = paginator.page(page)
+>>>>>>> 987a2fce37277d948fa4683c7b70925f7e8cb4c2
         context['userCategories'] = categories
         context['quiz'] = quiz_obj
         context['exercise'] = exercise_obj
@@ -411,6 +440,7 @@ class DeleteExercise(LoginRequiredMixin, DetailView):
 class LeaderboardView(ListView):
     model = CustomUser
     fields = '__all__'
+<<<<<<< HEAD
 
     class Meta:
         ordering = ['-level']
@@ -424,6 +454,20 @@ class LeaderboardView(ListView):
                     category_id=i).order_by('-level')[:5])
         print(cats)
         context['userCategories'] = cats
+=======
+    ordering = ["-level"] 
+        
+    def get_context_data(self, **kwargs):
+        context = super(LeaderboardView, self).get_context_data(**kwargs)
+        cats =[]
+        categories = Category.objects.all()
+        for i in range(1,11):
+            cats.append(UserCategory.objects.filter(category_id = i).order_by('-level')[:5]) 
+        print(cats)
+        context['userCategories'] = cats 
+        context['categories'] = categories 
+        context['loop_times'] = range(0,5)
+>>>>>>> 987a2fce37277d948fa4683c7b70925f7e8cb4c2
         return context
 
 

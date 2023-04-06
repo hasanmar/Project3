@@ -3,6 +3,7 @@
 {% block content %}
 
 <style>
+<<<<<<< HEAD
 	section{
 		margin-top: 10vh;
 		display: flex;
@@ -15,31 +16,41 @@
 h1 {
 	font-size: 23px;
 }
+=======
+	h1 {
+		font-size: 23px;
+	}
 
-h2 {
-	font-size: 17px;
-}
+	h2 {
+		font-size: 17px;
+	}
+>>>>>>> 987a2fce37277d948fa4683c7b70925f7e8cb4c2
 
-p {
-	font-size: 15px;
-}
-
-
-
-h1, h2, p, a, span{
-	color: black;
-}
-
-.titular {
-	display: block;
-	line-height: 60px;
-	margin: 0;
-	text-align: center;
-	border-top-left-radius: 5px;
-	border-top-right-radius: 5px;
-}
+	p {
+		font-size: 15px;
+	}
 
 
+
+	h1,
+	h2,
+	p,
+	a,
+	span {
+		color: black;
+	}
+
+	.titular {
+		display: block;
+		line-height: 60px;
+		margin: 0;
+		text-align: center;
+		border-top-left-radius: 5px;
+		border-top-right-radius: 5px;
+	}
+
+
+<<<<<<< HEAD
 .profile-picture {
 	border-radius: 100%;
 	overflow: hidden;
@@ -135,9 +146,105 @@ h1, h2, p, a, span{
 					font-size: 30px;
 					color: #d32f2f !important;
 				}
+=======
+	.profile-picture {
+		border-radius: 100%;
+		overflow: hidden;
+		-webkit-box-sizing: content-box;
+		-moz-box-sizing: content-box;
+		box-sizing: content-box;
+		margin: 0 auto;
+		border: 5px solid #50597b;
+		width: 150px;
+		height: 150px;
+	}
+
+	section.container {
+		display: flex;
+		justify-content: center;
+		padding-top: 100px;
+	}
+
+	.widget {
+		width: 300px;
+	}
+
+	.block {
+		margin-bottom: 25px;
+		background: #e0e0e0;
+		border-radius: 5px;
+	}
+
+	.menu-box {
+		min-height: 360px;
+		height: fit-content;
+
+	}
+
+	.menu-box .titular {
+		background: #11a8ab;
+	}
+
+	.menu-box-number {
+		width: 36px;
+		line-height: 22px;
+		background: #11a8ab;
+		text-align: center;
+		border-radius: 15px;
+		position: absolute;
+		top: 15px;
+		right: 15px;
+		-webkit-transition: all .3s;
+		transition: all .3s;
+	}
+
+	.menu-box-menu li {
+		height: 60px;
+		position: relative;
+	}
+
+	.menu-box-tab {
+		line-height: 60px;
+		display: block;
+		border-bottom: 1px solid #1f253d;
+		-webkit-transition: background .2s;
+		transition: background .2s;
+		cursor: unset;
+	}
+
+	.menu-box-tab:hover {
+		background: #11a8ab;
+		border-top: 1px solid #1f253d;
+		text-decoration: none;
+	}
+
+	.menu-box-tab:hover .menu-box-number {
+		background: rgb(189, 229, 11);
+	}
+
+	.right-container {
+		margin: 0 25px;
+	}
+
+	.profile {
+		min-height: 360px;
+	}
+
+	.user-name {
+		margin: 25px 0 16px;
+		text-align: center;
+	}
+
+	.profile-description {
+		width: 210px;
+		margin: 0 auto;
+		text-align: center;
+	}
+>>>>>>> 987a2fce37277d948fa4683c7b70925f7e8cb4c2
 </style>
 <div style="height: 10vh;"></div>
 <section class="container">
+<<<<<<< HEAD
 	<div class="one">
             <div class="profile block">
                 <div>&nbsp;</div>
@@ -257,3 +364,54 @@ h1, h2, p, a, span{
         </section>
 		<div style="height: 20vh;"></div>
 	 {% endblock %}
+=======
+
+	<div class="right-container widget">
+		<div class="profile block">
+			<div>&nbsp;</div>
+			<div class="profile-picture clear">
+				<img width="150px" alt="{{user.username}}'s' profile picture"
+					src="https://pbs.twimg.com/media/FjU2lkcWYAgNG6d.jpg">
+			</div>
+			<h1 class="user-name">{{ user.username }}</h1>
+			<div class="profile-description">
+				<p class="scnd-font-color">Email: {{ user.email }}</p>
+				<p class="scnd-font-color">Overall level: {{user.level|floatformat:-2}}</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="widget">
+		<div class="menu-box block">
+			<h2 class="titular">Level per category</h2>
+			<ul class="menu-box-menu">
+				{% for u in userCategories %}
+				<li>
+					<a class="menu-box-tab" href="#">&nbsp;&nbsp;&nbsp;{{u.category}}<div class="menu-box-number">
+							{{u.level|floatformat:-2}}</div></a>
+				</li>
+				{% endfor %}
+			</ul>
+			<div class='center'>
+				<span class="left">
+				{% if userCategories.has_previous %}
+				<a href='{% url "profile" user.id %}?page={{ userCategories.previous_page_number }}'>Previous </a>
+				{% endif %}
+			</span>
+				<span class='mx-4'>
+					Page {{ userCategories.number }} of {{ userCategories.paginator.num_pages }}
+				</span>
+
+				<span class="right">
+				{% if userCategories.has_next %}
+				<a href='{% url "profile" user.id %}?page={{ userCategories.next_page_number }}'> Next</a>
+				{% endif %}
+				</span>
+			</div>
+		</div>
+	</div>
+</section>
+<div style="height: 20vh;"></div>
+
+{% endblock %}
+>>>>>>> 987a2fce37277d948fa4683c7b70925f7e8cb4c2
