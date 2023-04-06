@@ -1,0 +1,102 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<section class="container"> 
+<h1>Exercise: {{exercise.first.category}}</h1>
+<div style="display: flex;"><div class="progress">
+    <div class="determinate" id="progress-bar" style="width: 0"></div> 
+</div><div style="font-weight:500; font-size: 20px; position: relative; top: -10px;">&nbsp;<span id="q-id">1</span>/{{ exercise|length }}</div></div>
+<form action="" method="post">
+    {% csrf_token %}
+{% for i in exercise %}
+<div class="ques hide">
+    <div class="card" style="padding: 10px;">
+        <div class="card-title">
+           <span> &nbsp; {{forloop.counter }}.</span> {{i.question}}
+        </div> 
+    </div>
+        <ul class="exer-quiz">
+            <li class="row">
+                <blockquote data-select="{{i.option1}}" data-num="{{forloop.counter }}"class="card col s10 ">
+                    <div  class="op">
+                        {{i.option1}}
+                    </div>
+                </blockquote>
+            </li>
+            <li class="row">
+                <blockquote data-select="{{i.option2}}"  data-num="{{forloop.counter }}" class="card col s10 ">
+                    <div  class="op">
+                    {{i.option2}}
+                </div>
+            </blockquote>
+            </li>
+            <li class="row">
+                <blockquote data-select="{{i.option3}}" data-num="{{forloop.counter }}" class="card col s10 ">
+                    <div  class="op">
+                    {{i.option3}}
+                </div>
+            </blockquote>
+            </li>
+            <li class="row">
+                <blockquote data-select="{{i.option4}}" data-num="{{forloop.counter }}" class="card col s10 ">
+                    <div  class="op">
+                    {{i.option4}}
+                </div>
+            </blockquote>
+            </li>
+        </ul>
+            <input type="hidden" name="answer{{forloop.counter}}" class="hidden-answer">
+            <button type="button" class="right next waves-effect waves-light btn disabled">&nbsp; next &nbsp;</button>
+        </ul>
+    </div>    
+    {% endfor %}
+<input type="submit" value="&nbsp; submit &nbsp;" class="btn right hide disabled">
+</form>
+<div style="height: 20vh;"></div>
+
+</section>
+    <script>
+        let counter = 0
+        let progress = 0
+        const progressBar = document.querySelector('#progress-bar')    
+        const lists = document.querySelectorAll('blockquote')
+        const all = document.querySelectorAll('*')
+        const answers = document.querySelectorAll('.hidden-answer')
+        const ques = document.querySelectorAll('.ques')
+        const btnNext = document.querySelectorAll('.next')
+        const btnSumbit = document.querySelector('input[type=submit]')
+        const qId = document.querySelector('#q-id')
+        const total = ques.length
+        ques[counter].classList.remove('hide')
+        function nextHandler(e){
+            ques[counter].classList.add('hide')
+            counter++
+            progress+=(100/total)
+            progressBar.style.width=`${progress}%`
+            qId.innerText=`${counter+1}`
+
+            if (counter>total-2){
+                btnSumbit.classList.remove('hide')
+                btnNext[counter].classList.add('hide')}
+                ques[counter].classList.remove('hide')
+            }
+        function listsHandler(e){
+            btnNext[counter].classList.remove('disabled')
+            if (counter===4)
+                btnSumbit.classList.remove('disabled')
+            all.forEach(list=>{
+                list.classList.remove('green-color')
+            })
+            this.classList.add('green-color')
+            answers[counter].value=this.dataset.select
+        }
+        lists.forEach(list=>{
+            list.addEventListener('click',listsHandler)
+        })
+        
+        btnNext.forEach(next=>{
+            next.addEventListener('click',nextHandler)
+        })
+    </script>
+
+{% endblock %}
