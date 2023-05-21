@@ -1,0 +1,129 @@
+{% extends 'base.html' %}
+{% block content %}
+<div style="height: 20vh;"></div>
+<section class="container">
+<h1>Learning Resources</h1>
+    <p>Welcome to our learning resources page. Below you will find links to helpful resources on various topics to help you learn and improve your skills.</p>
+    <ul class="collapsible">
+      <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>HTML</div>
+        <div class="collapsible-body">
+          <ul>
+            <li>
+              <a target="_blank" rel="noopener noreferrer" href="https://www.w3schools.com/html/">W3Schools HTML Tutorial</a>
+            </li>
+            <li>
+              <a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Learn/HTML">MDN Web Docs HTML Guide</a>
+            </li>
+          </ul>
+        </div>
+      </li>
+
+      <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>CSS</div>
+        <div class="collapsible-body">
+          <ul>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://www.w3schools.com/css/">W3Schools CSS Tutorial</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Learn/CSS">MDN Web Docs CSS Guide</a></li>
+          </ul>
+        </div>
+      </li>
+  
+
+
+
+      <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>JavaScript</div>
+        <div class="collapsible-body">
+          <ul>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://www.w3schools.com/js/">W3Schools JavaScript Tutorial</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://developer.mozilla.org/en-US/docs/Learn/JavaScript">MDN Web Docs JavaScript Guide</a></li>
+          </ul>
+        </div>
+      </li>
+
+
+
+
+      <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>jQuery</div>
+        <div class="collapsible-body">
+          <ul>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://www.w3schools.com/jquery/">W3Schools jQuery Tutorial</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://jquery.com/">jQuery Official Documentation</a></li>
+          </ul>
+        </div>
+      </li>
+
+
+
+      <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>Node.js</div>
+        <div class="collapsible-body">
+          <ul>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://www.w3schools.com/nodejs/">W3Schools Node.js Tutorial</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://nodejs.org/en/docs/">Node.js Official Documentation</a></li>
+          </ul>
+        </div>
+      </li>
+
+
+
+      <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>Express</div>
+        <div class="collapsible-body">
+          <ul>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://www.w3schools.com/nodejs/nodejs_express.asp">W3Schools Express Tutorial</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://expressjs.com/">Express Official Documentation</a></li>
+          </ul>
+        </div>
+      </li>
+
+
+
+      <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>Python</div>
+        <div class="collapsible-body">
+          <ul>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://www.w3schools.com/python/">W3Schools Python Tutorial</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://www.python.org/doc/">Python Official Documentation</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>Django</div>
+        <div class="collapsible-body">
+          <ul>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://www.djangoproject.com/start/">Django Getting Started Guide</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://docs.djangoproject.com/">Django Official Documentation</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>SQL</div>
+        <div class="collapsible-body">
+          <ul>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://www.w3schools.com/sql/">W3Schools SQL Tutorial</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://dev.mysql.com/doc/">MySQL Official Documentation</a></li>
+          </ul>
+        </div>
+      </li>
+      <li>
+        <div class="collapsible-header"><i class="material-icons">code</i>Mongoose</div>
+        <div class="collapsible-body">
+          <ul>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://mongoosejs.com/docs/">Mongoose Official Documentation</a></li>
+            <li><a target="_blank" rel="noopener noreferrer" href="https://www.w3schools.com/nodejs/nodejs_mongodb.asp">W3Schools Mongoose Tutorial</a></li>
+          </ul>
+        </div>
+      </li>
+    </ul>
+    <p>We hope these resources are helpful in your learning journey. Remember to practice regularly and keep pushing yourself to learn and improve.</p>
+  </section>
+<div style="height: 20vh;"></div>
+
+<script>
+  const elemsCollapsible = document.querySelectorAll('.collapsible');
+    M.Collapsible.init(elemsCollapsible);
+</script>
+        {% endblock  %}

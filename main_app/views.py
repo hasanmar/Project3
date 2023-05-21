@@ -5,23 +5,21 @@ from django.contrib.auth.views import LoginView
 from django.contrib.auth.decorators import login_required
 from django.contrib.sites.shortcuts import get_current_site
 from django.core.mail import EmailMessage
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from django.db.models.functions import Random
-from django.http import HttpResponse, Http404
+from django.http import HttpResponse, Http404, HttpResponseRedirect
 from django.shortcuts import redirect, render
 from django.template import RequestContext
 from django.template.loader import render_to_string
 from django.urls import reverse_lazy
 from .models import Category, Quiz, Exercise, CustomUser, UserCategory
-from django.views.generic import ListView, DetailView, CreateView
+from django.views.generic import ListView, DetailView, CreateView, DetailView
 from django.views.generic.edit import UpdateView
 from django.utils.encoding import force_bytes, force_str
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from .forms import UserCreationForm
 from .tokens import account_activation_token
 from django.core.paginator import Paginator, EmptyPage
-
-
-
 
 
 def index(request):
@@ -224,7 +222,7 @@ class CustomLoginView(LoginView):
 ################################################
 ##                  Add Quiz                  ##
 ################################################
-class AddQuiz(LoginRequiredMixin,CreateView):
+class AddQuiz(LoginRequiredMixin, CreateView):
     model = Quiz
     fields = [
         'qustion', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
@@ -235,6 +233,7 @@ class AddQuiz(LoginRequiredMixin,CreateView):
         return super().form_invalid(form)
 
     def form_valid(self, form):
+        print(self.request.user)
         form.instance.category_id = self.kwargs['category_id']
         form.instance.user = self.request.user
         messages.success(self.request, 'Quiz submitted!')
@@ -244,7 +243,7 @@ class AddQuiz(LoginRequiredMixin,CreateView):
 ################################################
 ##              Add Exercises                 ##
 ################################################
-class AddExercise(LoginRequiredMixin,CreateView):
+class AddExercise(LoginRequiredMixin, CreateView):
     model = Exercise
     fields = [
         'question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
@@ -264,7 +263,7 @@ class AddExercise(LoginRequiredMixin,CreateView):
 ################################################
 ##                 contribute                 ##
 ################################################
-class ContributeCategoryList(LoginRequiredMixin,ListView):
+class ContributeCategoryList(LoginRequiredMixin, ListView):
     model = Category
     template_name = "main_app/contribute.html"
 
@@ -288,67 +287,149 @@ def activate(request, uidb64, token):
             request, 'Your email has been confirmed. Welcome to our website!')
         return redirect('home')
     else:
-        return HttpResponse('Activation link is invalid!')   
-    
-    
-class MyPaginator(Paginator):
-    def validate_number(self, number):
-        try:
-            return super().validate_number(number)
-        except EmptyPage:
-            if int(number) > 1:
-                # return the last page
-                return self.num_pages
-            elif int(number) < 1:
-                # return the first page
-                return 1
-            else:
-                raise
+        return HttpResponse('Activation link is invalid!')
 
-class Profile(LoginRequiredMixin,DetailView):
+
+################################################
+##                 Profile Page               ##
+################################################
+
+
+class Profile(LoginRequiredMixin, DetailView):
     model = CustomUser
     template_name = 'profile.html'
-    slug_field = 'username'
-    slug_url_kwarg = 'username'
-    paginator_class = MyPaginator
 
+    # slug_field = 'username'
+    # slug_url_kwarg = 'username'
     def get_context_data(self, **kwargs):
+        PAGES_NUM = 5
         context = super(Profile, self).get_context_data(**kwargs)
         id = int(self.kwargs.get('pk'))
         categories = UserCategory.objects.filter(user_id=id)
-        page = self.request.GET.get('page', 1)
-        print('categories', categories)
-        paginator = self.paginator_class(categories, 4)
-        categories = paginator.page(page)
+        quiz = Quiz.objects.filter(user_id=id)
+        exercise = Exercise.objects.filter(user_id=id)
+
+        paginator1 = Paginator(quiz, PAGES_NUM)
+        paginator2 = Paginator(exercise, PAGES_NUM)
+
+        page1 = self.request.GET.get('page1')
+        try:
+            quiz_obj = paginator1.get_page(page1)
+        except PageNotAnInteger:
+            quiz_obj = paginator1.get_page(1)
+        except EmptyPage:
+            quiz_obj = paginator1.get_page(paginator1.num_pages)
+
+        page2 = self.request.GET.get('page2')
+        try:
+            exercise_obj = paginator2.get_page(page2)
+        except PageNotAnInteger:
+            exercise_obj = paginator2.get_page(1)
+        except EmptyPage:
+            exercise_obj = paginator2.get_page(paginator2.num_pages)
+
         context['userCategories'] = categories
+        context['quiz'] = quiz_obj
+        context['exercise'] = exercise_obj
+
         return context
 
+
+################################################
+##                  Edit Quiz                  ##
+################################################
+class UpdateQuiz(LoginRequiredMixin, UpdateView):
+    model = Quiz
+    fields = [
+        'qustion', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
+    ]
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.object.user_id})
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid form entries')
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.isApproved = False
+        messages.success(self.request, 'Quiz Updated!')
+        return super().form_valid(form)
+
+
+################################################
+##               Delete Quiz                  ##
+################################################
+class DeleteQuiz(LoginRequiredMixin, DetailView):
+    model = Quiz
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.object.user_id})
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
+
+
+################################################
+##              Update Exercise               ##
+################################################
+class UpdateExercise(LoginRequiredMixin, UpdateView):
+    model = Exercise
+    fields = [
+        'question', 'option1', 'option2', 'option3', 'option4', 'correctAnswer'
+    ]
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.object.user_id})
+
+    def form_invalid(self, form):
+        messages.error(self.request, 'Invalid form entries')
+        return super().form_invalid(form)
+
+    def form_valid(self, form):
+        form.instance.isApproved = False
+        messages.success(self.request, 'Exercise Updated!')
+        return super().form_valid(form)
+
+
+################################################
+##               Delete Exercise              ##
+################################################
+class DeleteExercise(LoginRequiredMixin, DetailView):
+    model = Exercise
+
+    def get_success_url(self):
+        return reverse_lazy('profile', kwargs={'pk': self.object.user_id})
+
+    def get(self, request, *args, **kwargs):
+        self.object = self.get_object()
+        self.object.delete()
+        return HttpResponseRedirect(self.get_success_url())
 
 
 class LeaderboardView(ListView):
     model = CustomUser
     fields = '__all__'
-    ordering = ["-level"] 
-        
+    ordering = ["-level"]
+
     def get_context_data(self, **kwargs):
         context = super(LeaderboardView, self).get_context_data(**kwargs)
-        cats =[]
+        cats = []
         categories = Category.objects.all()
-        for i in range(1,11):
-            cats.append(UserCategory.objects.filter(category_id = i).order_by('-level')[:5]) 
+        for i in range(1, 11):
+            cats.append(
+                UserCategory.objects.filter(
+                    category_id=i).order_by('-level')[:5])
         print(cats)
-        context['userCategories'] = cats 
-        context['categories'] = categories 
-        context['loop_times'] = range(0,5)
+        context['userCategories'] = cats
+        context['categories'] = categories
+        context['loop_times'] = range(0, 5)
         return context
 
 
-
-
-
-
 ## IMAGE POST##
-
 
 # def profile(request):
 #     if request.method == 'POST':
